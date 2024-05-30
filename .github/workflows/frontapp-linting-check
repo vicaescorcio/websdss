@@ -1,0 +1,54 @@
+name: Linting Front App Code
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  frontapp-pull-request-check:
+    name: checks for linting errors in the frontapp code
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20.x]
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Cache NPM dependencies
+        uses: actions/cache@v4
+        id: frontapp-npm-cache
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-npm-cache-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-npm-cache-
+      - name: Install dependencies
+        run: npm ci
+        if: steps.frontapp-npm-cache.outputs.cache-hit != 'true'
+      - name: Code Linting
+        run: |
+          npm run lint
+
+# These are legacy default permissions that were added automatically.
+# https://github.com/tadodotcom/github-management/issues/7
+# Please do reconsider this list when you work on this file and remove
+# permissions you do not actually need! If only pure read-only access to
+# check out and build the source is needed, you can remove this section.
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  issues: write
+  packages: write
+  pages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
