@@ -1,13 +1,14 @@
-name: Linting Front App Code
+name: Test Build Check for Front App
 
 on:
   pull_request:
     branches:
       - main
-
+    paths:
+      - frontapp/**
 jobs:
-  frontapp-pull-request-check:
-    name: checks for linting errors in the frontapp code
+  temporal-tests-check:
+    name: Runs tests for the Front App
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -29,11 +30,14 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-npm-cache-
       - name: Install dependencies
-        run: npm ci
-        if: steps.frontapp-npm-cache.outputs.cache-hit != 'true'
-      - name: Code Linting
+        working-directory: frontapp
         run: |
-          npm run lint
+          npm ci
+        if: steps.frontapp-npm-cache.outputs.cache-hit != 'true'
+      - name: Run tests
+        working-directory: frontapp
+        run: |
+          npm run test
 
 # These are legacy default permissions that were added automatically.
 # https://github.com/tadodotcom/github-management/issues/7
