@@ -1,9 +1,7 @@
 name: Test Build Check for Front App
 
 on:
-  pull_request:
-    branches:
-      - main
+  push:
     paths:
       - frontapp/**
 jobs:

@@ -1,9 +1,7 @@
 name: Check Front App Code changes
 
 on:
-  pull_request:
-    branches:
-      - main
+  push:
     paths:
       - frontapp/**
 jobs:
