@@ -1,11 +1,12 @@
 name: Check Front App Code changes
 
 on:
-  push:
+  pull_request:
     paths:
-      - frontapp/**
+      - "frontapp/**"
+      - ".github/workflows/**"
 jobs:
-  temporal-pull-request-check:
+  frontapp-pull-request-check:
     name: check front app code changes in the pull reqeust
     runs-on: ubuntu-latest
     strategy:

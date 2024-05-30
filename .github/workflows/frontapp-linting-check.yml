@@ -1,9 +1,10 @@
 name: Linting Front App Code
 
 on:
-  push:
+  pull_request:
     paths:
-      - frontapp/**
+      - "frontapp/**"
+      - ".github/workflows/**"
 jobs:
   frontapp-pull-request-check:
     name: checks for linting errors in the frontapp code

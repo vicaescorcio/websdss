@@ -1,11 +1,12 @@
 name: Test Build Check for Front App
 
 on:
-  push:
+  pull_request:
     paths:
-      - frontapp/**
+      - "frontapp/**"
+      - ".github/workflows/**"
 jobs:
-  temporal-tests-check:
+  frontapp-tests-check:
     name: Runs tests for the Front App
     runs-on: ubuntu-latest
     strategy:
