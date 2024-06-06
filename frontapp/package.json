@@ -11,6 +11,10 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material-nextjs": "^5.15.11",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "leaflet-geosearch": "^4.0.0",
