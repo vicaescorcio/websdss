@@ -52,6 +52,7 @@ const Map = (Map: MapProps) => {
       <Marker position={posix} draggable={false}>
         <Popup>Hey ! I study here</Popup>
       </Marker>
+      <p>Hey ho</p>
     </MapContainer>
   );
 };

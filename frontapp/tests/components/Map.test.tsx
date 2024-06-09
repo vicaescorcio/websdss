@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import Map from '@/components/Map';
 
 // jest.mock('next/dynamic', () => (func: any) => {
 //   const functionString = func.toString();
@@ -11,8 +12,21 @@ import { render } from '@testing-library/react';
 //   return require(modulePath)[componentName];
 // });
 
-describe('Map', () => {
+jest.mock('@/components/MapLayers/HexGrid', () => {
+  return {
+    __esModule: true,
+    default: () => {
+      return <div></div>;
+    },
+  };
+});
+
+describe('Home', () => {
   it('renders a heading', () => {
-    expect(true).toBe(true);
+    render(<Map posix={[-3.731862, -38.526669]} />);
+
+    const heading = screen.getByText('Hey ho');
+
+    expect(heading).toBeInTheDocument();
   });
 });
