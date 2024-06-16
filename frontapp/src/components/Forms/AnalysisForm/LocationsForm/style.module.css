@@ -1,0 +1,60 @@
+.locationFormContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  padding: 10px;
+
+  .formControl {
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+  }
+  .inputLabel {
+    display: flex;
+    align-self: center;
+    justify-content: space-between;
+    pointer-events: auto;
+  }
+
+  .searchLocationContainer {
+    margin-bottom: 10px;
+
+    /* .formControl {
+      width: 100%;
+      margin-bottom: 20px;
+    } */
+    .searchButton {
+      margin-top: 3%;
+      margin-left: auto;
+      width: 100%;
+    }
+  }
+
+  .coordinatesContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .locationItemContainer {
+      margin-bottom: 10px;
+    }
+
+    .locationItem {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
+      .label {
+        align-self: center;
+        color: black;
+      }
+    }
+  }
+  .divider {
+    margin-bottom: 20px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}

@@ -1,0 +1,12 @@
+.multiCriteriaFormContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  padding: 10px;
+
+  .formControl {
+    margin-bottom: 15px;
+  }
+}

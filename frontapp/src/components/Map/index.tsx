@@ -1,6 +1,12 @@
 'use client';
 
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvents,
+} from 'react-leaflet';
 import HexGrid from '../MapLayers/HexGrid';
 import { LatLngExpression, LatLngTuple } from 'leaflet';
 import fortalezaHexagons from '../../../public/fortaleza-hexgrid.json';
@@ -13,6 +19,7 @@ import { useRef } from 'react';
 interface MapProps {
   posix: LatLngExpression | LatLngTuple;
   zoom?: number;
+  children?: React.ReactNode;
 }
 
 const defaults = {
@@ -50,9 +57,9 @@ const Map = (Map: MapProps) => {
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       />
       <Marker position={posix} draggable={false}>
-        <Popup>Hey ! I study here</Popup>
+        <Popup>Hey ! I s tudy here</Popup>
       </Marker>
-      <p>Hey ho</p>
+      {Map.children}
     </MapContainer>
   );
 };

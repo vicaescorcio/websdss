@@ -1,3 +1,4 @@
+import { useMapEvents } from 'react-leaflet';
 import { GeoJSON } from 'react-leaflet/GeoJSON';
 
 const onEachFeature = (feature: any, layer: any) => {
@@ -13,6 +14,14 @@ const onEachFeature = (feature: any, layer: any) => {
 };
 
 const HexGrid = ({ data }: { data: GeoJSON.FeatureCollection }) => {
+  const map = useMapEvents({
+    click() {
+      map.locate();
+    },
+    locationfound(e) {
+      map.flyTo(e.latlng, map.getZoom());
+    },
+  });
   return <GeoJSON data={data} onEachFeature={onEachFeature} />;
 };
 

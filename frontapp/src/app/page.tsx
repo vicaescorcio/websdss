@@ -1,5 +1,7 @@
+import AnalysisForm from '@/components/Forms/AnalysisForm';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
+import style from './page.module.css';
 
 export default async function Page() {
   const Map = useMemo(
@@ -13,7 +15,8 @@ export default async function Page() {
 
   return (
     <div>
-      <Map posix={[-3.731862, -38.526669]} />
+      <Map posix={[-3.731862, -38.526669]}></Map>
+      <AnalysisForm />
     </div>
   );
 }
