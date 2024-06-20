@@ -14,6 +14,7 @@ import { startAnalysis, AnalysisFormState } from './actions';
 import style from './style.module.css';
 
 import { AnalysisForm } from './types';
+import * as LocationFormTypes from './LocationsForm/types';
 
 const initialState: AnalysisFormState = {
   locations: [],
@@ -25,9 +26,17 @@ const initialState: AnalysisFormState = {
 };
 
 const AnalysisForm = ({
+  locationFormData,
+  setLocationFormData,
   analysisFormData,
+  setCityGeoJson,
 }: {
+  locationFormData: LocationFormTypes.LocationForm;
+  setLocationFormData: React.Dispatch<
+    React.SetStateAction<LocationFormTypes.LocationForm>
+  >;
   analysisFormData: MutableRefObject<AnalysisForm>;
+  setCityGeoJson: (value: any) => void;
 }) => {
   const [checked, setChecked] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
@@ -36,7 +45,14 @@ const AnalysisForm = ({
   const steps = [
     {
       label: 'Select Points of Interest',
-      component: <LocationForm formData={analysisFormData.current} />,
+      component: (
+        <LocationForm
+          locationFormData={locationFormData}
+          setLocationFormData={setLocationFormData}
+          formData={analysisFormData.current}
+          setCityGeoJson={setCityGeoJson}
+        />
+      ),
     },
     {
       label: 'Set accessibility model parameters',

@@ -18,11 +18,19 @@ import style from './style.module.css';
 import { LocationForm, LocationPoint } from './types';
 import { AnalysisForm } from '../types';
 
-export default function LocationForm({ formData }: { formData: AnalysisForm }) {
-  const [locationFormData, setLocationFormData] = React.useState<LocationForm>(
-    formData.locationForm
-  );
+import fortalezaHexagons from '@/../public/fortaleza-hexgrid-2.json';
 
+export default function LocationForm({
+  formData,
+  locationFormData,
+  setLocationFormData,
+  setCityGeoJson,
+}: {
+  locationFormData: LocationForm;
+  setLocationFormData: React.Dispatch<React.SetStateAction<LocationForm>>;
+  formData: AnalysisForm;
+  setCityGeoJson: (value: any) => void;
+}) {
   const handleChange = (e: any) => {
     setLocationFormData((previous: LocationForm) => {
       const newLocationData = {
@@ -94,27 +102,12 @@ export default function LocationForm({ formData }: { formData: AnalysisForm }) {
               locationFormData.city.length > 0 &&
               locationFormData.country &&
               locationFormData.country.length > 0 &&
-              locationFormData.points.length < 4
+              locationFormData.points.length === 0
             )
           }
           onClick={(e) => {
-            setLocationFormData((previous: LocationForm) => {
-              const newLocationData = {
-                ...previous,
-                points: [
-                  ...previous.points,
-                  {
-                    latitude: 0,
-                    longitude: 0,
-                    name: 'Point',
-                  } as LocationPoint,
-                ],
-              };
-
-              formData.locationForm = newLocationData;
-
-              return newLocationData;
-            });
+            if (locationFormData.points.length === 0)
+              setCityGeoJson(fortalezaHexagons);
           }}
           className={style.searchButton}
           size='large'
@@ -147,6 +140,8 @@ export default function LocationForm({ formData }: { formData: AnalysisForm }) {
               <FormLabel>Point {index + 1}</FormLabel>
               <IconButton
                 onClick={(e) => {
+                  if (locationFormData.points.length === 1)
+                    setCityGeoJson(null);
                   setLocationFormData((previous: LocationForm) => {
                     const newPoints = previous.points.filter(
                       (el, i) => i !== index
