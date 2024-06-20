@@ -22,7 +22,13 @@ const HexGrid = ({ data }: { data: GeoJSON.FeatureCollection }) => {
       map.flyTo(e.latlng, map.getZoom());
     },
   });
-  return <GeoJSON data={data} onEachFeature={onEachFeature} />;
+  return (
+    <GeoJSON
+      key={JSON.stringify(data)}
+      data={data}
+      onEachFeature={onEachFeature}
+    />
+  );
 };
 
 export default HexGrid;

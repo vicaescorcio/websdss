@@ -1,6 +1,6 @@
 'use client';
 import { useFormState } from 'react-dom';
-import { useState, useRef, Fragment } from 'react';
+import { useState, useRef, Fragment, MutableRefObject } from 'react';
 import Box from '@mui/material/Box';
 import Slide from '@mui/material/Slide';
 import Button from '@mui/material/Button';
@@ -24,33 +24,14 @@ const initialState: AnalysisFormState = {
   criteria: [],
 };
 
-const initialAnalysisForm: AnalysisForm = {
-  locationForm: {
-    country: '',
-    city: '',
-    points: [],
-  },
-  accessibilityForm: {
-    distance: 1000,
-    transportMode: 'walking',
-    year: '2020',
-    model: 'passive',
-    travelTime: 30,
-  },
-
-  multiCriteriaForm: {
-    groups: [],
-    gender: 'male',
-    incomeRange: [0, 100000],
-    ageRange: [0, 10],
-  },
-};
-
-const AnalysisForm = () => {
+const AnalysisForm = ({
+  analysisFormData,
+}: {
+  analysisFormData: MutableRefObject<AnalysisForm>;
+}) => {
   const [checked, setChecked] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
   const [state, formAction] = useFormState(startAnalysis, initialState);
-  const analysisFormData = useRef<AnalysisForm>(initialAnalysisForm);
 
   const steps = [
     {

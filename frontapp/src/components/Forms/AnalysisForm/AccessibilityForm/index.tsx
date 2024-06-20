@@ -112,74 +112,78 @@ const AccessibilityForm = ({ formData }: { formData: AnalysisForm }) => {
   }
   return (
     <Box className={style.accessibilityFormContainer}>
-      <FormControl className={style.formControl}>
-        <FormLabel
-          id='radio-model-label'
-          sx={{ display: 'flex', alignItems: 'center' }}
-        >
-          <Tooltip title='dasdasdasd'>
-            <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
-          </Tooltip>
-          Accessibility Model
-        </FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby='radio-model-label'
-          name='model'
-          onChange={handleChange}
-          sx={{
-            color: 'black',
-            display: 'flex',
-            flexDirection: 'row',
-            m: 1,
-          }}
-          value={accessibilityForm.model}
-        >
-          {models.map((model) => (
-            <FormControlLabel
-              key={model.value}
-              value={model.value}
-              control={<Radio />}
-              label={model.label}
-            />
-          ))}
-        </RadioGroup>
-      </FormControl>
+      <Box
+        className={style.formControl}
+        sx={{ display: 'flex', mt: '10px', justifyContent: 'space-between' }}
+      >
+        <FormControl>
+          <FormLabel
+            id='radio-model-label'
+            sx={{ display: 'flex', alignItems: 'center' }}
+          >
+            <Tooltip title='dasdasdasd'>
+              <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
+            </Tooltip>
+            Accessibility Model
+          </FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby='radio-model-label'
+            name='model'
+            onChange={handleChange}
+            sx={{
+              color: 'black',
+              display: 'flex',
+              flexDirection: 'row',
+              m: 1,
+            }}
+            value={accessibilityForm.model}
+          >
+            {models.map((model) => (
+              <FormControlLabel
+                key={model.value}
+                value={model.value}
+                control={<Radio />}
+                label={model.label}
+              />
+            ))}
+          </RadioGroup>
+        </FormControl>
 
-      <FormControl className={style.formControl}>
-        <FormLabel
-          id='radio-year-label'
-          sx={{ display: 'flex', alignItems: 'center' }}
-        >
-          <Tooltip title='dasdasdasd'>
-            <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
-          </Tooltip>
-          Year
-        </FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby='radio-year-label'
-          name='year'
-          onChange={handleChange}
-          sx={{
-            color: 'black',
-            display: 'flex',
-            flexDirection: 'row',
-            m: 1,
-          }}
-          value={accessibilityForm.year}
-        >
-          {years.map((year) => (
-            <FormControlLabel
-              key={year.value}
-              value={year.value}
-              control={<Radio />}
-              label={year.label}
-            />
-          ))}
-        </RadioGroup>
-      </FormControl>
-
+        <FormControl>
+          <FormLabel
+            id='radio-year-label'
+            sx={{ display: 'flex', alignItems: 'center' }}
+          >
+            <Tooltip title='dasdasdasd'>
+              <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
+            </Tooltip>
+            Year
+          </FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby='radio-year-label'
+            name='year'
+            onChange={handleChange}
+            sx={{
+              color: 'black',
+              display: 'flex',
+              flexDirection: 'row',
+              m: 1,
+            }}
+            value={accessibilityForm.year}
+          >
+            {years.map((year) => (
+              <FormControlLabel
+                key={year.value}
+                value={year.value}
+                control={<Radio />}
+                label={year.label}
+              />
+            ))}
+          </RadioGroup>
+        </FormControl>
+      </Box>
       <FormControl className={style.formControl}>
         <FormLabel
           id='radio-transport-mode-label'
