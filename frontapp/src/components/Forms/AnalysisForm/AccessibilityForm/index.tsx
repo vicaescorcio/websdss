@@ -184,6 +184,7 @@ const AccessibilityForm = ({ formData }: { formData: AnalysisForm }) => {
           </RadioGroup>
         </FormControl>
       </Box>
+      <Divider sx={{ mb: '20px' }} />
       <FormControl className={style.formControl}>
         <FormLabel
           id='radio-transport-mode-label'
@@ -218,7 +219,7 @@ const AccessibilityForm = ({ formData }: { formData: AnalysisForm }) => {
           ))}
         </RadioGroup>
       </FormControl>
-
+      <Divider sx={{ mb: '20px' }} />
       <FormControl className={style.formControl}>
         <FormLabel sx={{ display: 'flex', alignItems: 'center' }}>
           <Tooltip title='dasdasdasd'>

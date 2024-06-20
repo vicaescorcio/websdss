@@ -6,10 +6,11 @@ import {
   InputLabel,
   FormLabel,
   Button,
-  IconButton,
   MenuItem,
+  TextField,
   Select,
   Tooltip,
+  Divider,
 } from '@mui/material';
 import { LocationOn, Remove, Info } from '@mui/icons-material';
 
@@ -116,6 +117,7 @@ export default function LocationForm({
           ADD POINT OF INTEREST
         </Button>
       </FormControl>
+      <Divider sx={{ mb: '20px' }} />
       <Box
         sx={{
           display: 'flex',
@@ -132,30 +134,37 @@ export default function LocationForm({
                 display: 'flex',
                 alignItems: 'center',
                 width: '100%',
-                mb: '5px',
+                mb: '10px',
                 justifyContent: 'space-between',
               }}
             >
               <LocationOn color={'primary'} />
-              <FormLabel>Point {index + 1}</FormLabel>
-              <IconButton
-                onClick={(e) => {
-                  if (locationFormData.points.length === 1)
-                    setCityGeoJson(null);
-                  setLocationFormData((previous: LocationForm) => {
-                    const newPoints = previous.points.filter(
-                      (el, i) => i !== index
-                    );
-                    const newLocationData = { ...previous, points: newPoints };
-                    formData.locationForm = newLocationData;
+              <TextField
+                label={`Point ${index + 1}`}
+                sx={{ width: '30%' }}
+                value={
+                  locationFormData.points.find((el) => point.hexId == el.hexId)
+                    ?.name
+                }
+                size='small'
+                onChange={(e) => {
+                  formData.locationForm.points =
+                    formData.locationForm.points.map((el) => {
+                      if (el.hexId == point.hexId) el.name = e.target.value;
+                      return el;
+                    });
 
+                  setLocationFormData((previous: LocationForm) => {
+                    const newLocationData = {
+                      ...previous,
+                      points: formData.locationForm.points,
+                    };
                     return newLocationData;
                   });
                 }}
-                color='error'
-              >
-                <Remove />
-              </IconButton>
+              ></TextField>
+              <FormLabel>Lat: {point.latitude.toPrecision(8)}</FormLabel>
+              <FormLabel>Long: {point.longitude.toPrecision(8)}</FormLabel>
             </Box>
           );
         })}

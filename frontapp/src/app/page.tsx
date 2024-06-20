@@ -9,7 +9,8 @@ import {
   LocationForm,
   LocationPoint,
 } from '@/components/Forms/AnalysisForm/LocationsForm/types';
-import L, { LatLngTuple, Layer, Map } from 'leaflet';
+import L, { Layer, Map } from 'leaflet';
+import { HexProperties } from '@/components/MapLayers/HexGrid/types';
 
 const initialAnalysisForm: AnalysisForm = {
   locationForm: {
@@ -56,21 +57,41 @@ export default function Page() {
       <Map posix={[-3.731862, -38.526669]}>
         <HexGrid
           data={cityGeoJson as GeoJSON.FeatureCollection}
-          onClick={(feature: any, layer: Layer, map: Map) => {
-            const point = [-33, -70] as LatLngTuple;
-            const marker = L.marker(point).bindPopup('This is Littleton, CO.');
-            map.addLayer(marker);
+          onClick={(
+            feature: GeoJSON.Feature<any, HexProperties>,
+            layer: Layer,
+            map: Map
+          ) => {
+            const point = feature.geometry.coordinates[0][0];
+            const marker = L.marker([point[1], point[0]]).bindPopup(
+              `Point of interest ${feature.properties?.id as string}`
+            );
+            marker.addEventListener('click', (e) => {
+              setLocationFormData((previous: LocationForm) => {
+                marker.remove();
+                const newPoints = previous.points.filter(
+                  (el, i) =>
+                    el.hexId !=
+                    (feature.properties?.id || `${point[0]}-${point[1]}`)
+                );
+                const newLocationData = { ...previous, points: newPoints };
+                analysisFormData.current.locationForm = newLocationData;
+
+                return newLocationData;
+              });
+            });
             setLocationFormData((previous: LocationForm) => {
               if (previous.points.length > 3) return previous;
+              map.addLayer(marker);
               const newLocationData = {
                 ...previous,
                 points: [
                   ...previous.points,
                   {
-                    parentHex: 'dddd',
+                    hexId: feature.properties?.id || `${point[0]}-${point[1]}`,
                     latitude: point[0],
                     longitude: point[1],
-                    name: 'point 1',
+                    name: 'point',
                   } as LocationPoint,
                 ],
               };
@@ -79,8 +100,6 @@ export default function Page() {
 
               return newLocationData;
             });
-
-            console.log('Feature clicked', feature.geometry.coordinates);
           }}
         />
       </Map>

@@ -45,9 +45,6 @@ const Map = (Map: MapProps) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
-        <Marker position={position} draggable={false}>
-          <Popup>Hey ! I s tudy here</Popup>
-        </Marker>
         {Map.children}
       </MapContainer>
     </Fragment>

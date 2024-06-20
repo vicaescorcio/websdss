@@ -12,7 +12,6 @@ export const startAnalysis = async (
   prevState: AnalysisFormState,
   formData: FormData
 ): Promise<AnalysisFormState> => {
-  console.log(formData);
   return {
     locations: [],
     accessibility: {

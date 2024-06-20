@@ -1,12 +1,10 @@
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import {
   FormControl,
   FormLabel,
   Slider,
   FormControlLabel,
-  Checkbox,
   FormGroup,
-  SelectChangeEvent,
   Box,
   RadioGroup,
   Button,
@@ -14,9 +12,17 @@ import {
   IconButton,
   InputLabel,
   OutlinedInput,
+  Divider,
   Tooltip,
 } from '@mui/material';
-import { Remove, Groups, Info } from '@mui/icons-material';
+import {
+  Remove,
+  Groups,
+  Info,
+  CancelOutlined,
+  RemoveCircleOutline,
+  CancelTwoTone,
+} from '@mui/icons-material';
 import style from './style.module.css';
 import { AnalysisForm } from '../types';
 import { GroupCriteria, MultiCriteriaForm } from './types.d';
@@ -59,6 +65,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
           }}
         />
       </FormControl>
+      <Divider sx={{ mb: '20px' }} />
       <FormControl className={style.formControl}>
         <FormLabel sx={{ display: 'flex', alignItems: 'center' }}>
           <Tooltip title='dasdasdasd'>
@@ -78,6 +85,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
           }}
         />
       </FormControl>
+      <Divider sx={{ mb: '20px' }} />
       <FormControl>
         <FormLabel
           id='radio-gender-label'
@@ -101,6 +109,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
           <FormControlLabel value='other' control={<Radio />} label='Other' />
         </RadioGroup>
       </FormControl>
+      <Divider sx={{ mb: '20px' }} />
 
       <FormGroup className={style.formControl}>
         <Button
@@ -133,12 +142,13 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
         </Button>
       </FormGroup>
 
+      <Divider sx={{ mb: '20px' }} />
+
       <Box
         sx={{
           display: 'flex',
           mt: '5px',
           flexWrap: 'wrap',
-          justifyContent: 'space-between',
         }}
       >
         {multiCriteriaForm.groups.map((group, index) => {
@@ -148,21 +158,20 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                width: '100%',
-                mb: '5px',
-                justifyContent: 'space-between',
+                width: '50%',
+                mb: '8px',
+                justifyContent: 'space-around',
               }}
             >
               <Groups color={'primary'} />
               <FormLabel>Group {index + 1}</FormLabel>
-              <FormControl>
+              <FormControl size='small' sx={{ width: '35%' }}>
                 <InputLabel htmlFor='outlined-adornment-latitude'>
                   Weight
                 </InputLabel>
                 <OutlinedInput
                   type='number'
                   size='small'
-                  sx={{ width: '60%' }}
                   id='outlined-adornment-name'
                   label='weight'
                 />
@@ -184,7 +193,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
                 }}
                 color='error'
               >
-                <Remove />
+                <RemoveCircleOutline />
               </IconButton>
             </Box>
           );

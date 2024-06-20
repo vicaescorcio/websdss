@@ -1,5 +1,5 @@
 export type LocationPoint = {
-  parentHex: string;
+  hexId: string;
   latitude: number;
   longitude: number;
   name: string;
