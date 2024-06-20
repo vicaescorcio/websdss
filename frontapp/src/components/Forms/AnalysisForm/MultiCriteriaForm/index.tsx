@@ -14,15 +14,9 @@ import {
   OutlinedInput,
   Divider,
   Tooltip,
+  TextField,
 } from '@mui/material';
-import {
-  Remove,
-  Groups,
-  Info,
-  CancelOutlined,
-  RemoveCircleOutline,
-  CancelTwoTone,
-} from '@mui/icons-material';
+import { Remove, Groups, Info, RemoveCircleOutline } from '@mui/icons-material';
 import style from './style.module.css';
 import { AnalysisForm } from '../types';
 import { GroupCriteria, MultiCriteriaForm } from './types.d';
@@ -85,6 +79,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
           }}
         />
       </FormControl>
+
       <Divider sx={{ mb: '20px' }} />
       <FormControl>
         <FormLabel
@@ -120,7 +115,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
                 groups: [
                   ...previous.groups,
                   {
-                    name: '',
+                    name: `Group ${previous.groups.length + 1}`,
                     weight: 0,
                     incomeRange: multiCriteriaForm.incomeRange,
                     ageRange: multiCriteriaForm.ageRange,
@@ -158,14 +153,40 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                width: '50%',
+                width: '100%',
                 mb: '8px',
                 justifyContent: 'space-around',
               }}
             >
-              <Groups color={'primary'} />
-              <FormLabel>Group {index + 1}</FormLabel>
-              <FormControl size='small' sx={{ width: '35%' }}>
+              <Tooltip title={`Groups details: ${JSON.stringify(group)}`}>
+                <Groups color={'primary'} />
+              </Tooltip>
+              {/* <FormLabel>Group {index + 1}</FormLabel> */}
+              <TextField
+                label={`Group ${index + 1}`}
+                sx={{ width: '40%' }}
+                value={
+                  multiCriteriaForm.groups.find((el) => group.name == el.name)
+                    ?.name
+                }
+                size='small'
+                onChange={(e) => {
+                  formData.multiCriteriaForm.groups =
+                    formData.multiCriteriaForm.groups.map((el) => {
+                      if (el.name == group.name) el.name = e.target.value;
+                      return el;
+                    });
+
+                  setMultiCriteriaForm((previous: MultiCriteriaForm) => {
+                    const newMultiCriteriaData = {
+                      ...previous,
+                      groups: formData.multiCriteriaForm.groups,
+                    };
+                    return newMultiCriteriaData;
+                  });
+                }}
+              ></TextField>
+              <FormControl size='small' sx={{ width: '20%' }}>
                 <InputLabel htmlFor='outlined-adornment-latitude'>
                   Weight
                 </InputLabel>
@@ -174,6 +195,25 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
                   size='small'
                   id='outlined-adornment-name'
                   label='weight'
+                  value={
+                    multiCriteriaForm.groups.find((el) => group.name == el.name)
+                      ?.weight
+                  }
+                  onChange={(e) => {
+                    formData.multiCriteriaForm.groups =
+                      formData.multiCriteriaForm.groups.map((el) => {
+                        if (el.name == group.name) el.weight = +e.target.value;
+                        return el;
+                      });
+
+                    setMultiCriteriaForm((previous: MultiCriteriaForm) => {
+                      const newMultiCriteriaData = {
+                        ...previous,
+                        groups: formData.multiCriteriaForm.groups,
+                      };
+                      return newMultiCriteriaData;
+                    });
+                  }}
                 />
               </FormControl>
               <IconButton
