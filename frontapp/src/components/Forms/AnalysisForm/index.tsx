@@ -1,20 +1,19 @@
 'use client';
 import { useFormState } from 'react-dom';
 import { useState, useRef, Fragment, MutableRefObject } from 'react';
-import Box from '@mui/material/Box';
-import Slide from '@mui/material/Slide';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Stepper from './Stepper';
+import { Fab, Slide, Box } from '@mui/material';
 import LocationForm from './LocationsForm';
 import AccessibilityForm from './AccessibilityForm';
 import MultiCriteriaForm from './MultiCriteriaForm';
-import { startAnalysis, AnalysisFormState } from './actions';
+import Stepper from './Stepper';
+import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 
-import style from './style.module.css';
+import { startAnalysis, AnalysisFormState } from './actions';
 
 import { AnalysisForm } from './types';
 import * as LocationFormTypes from './LocationsForm/types';
+
+import style from './style.module.css';
 
 const initialState: AnalysisFormState = {
   locations: [],
@@ -41,6 +40,17 @@ const AnalysisForm = ({
   const [checked, setChecked] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
   const [state, formAction] = useFormState(startAnalysis, initialState);
+  const OpenFormButtonContent = checked ? (
+    <Fragment>
+      <ArrowDownward sx={{ mr: 2 }} />
+      Close Analysis Form
+    </Fragment>
+  ) : (
+    <Fragment>
+      <ArrowUpward sx={{ mr: 2 }} />
+      Open Analysis Form
+    </Fragment>
+  );
 
   const steps = [
     {
@@ -64,7 +74,7 @@ const AnalysisForm = ({
     },
   ];
 
-  const handleChange = () => {
+  const openForm = () => {
     setChecked((prev) => !prev);
   };
   return (
@@ -80,14 +90,15 @@ const AnalysisForm = ({
           </Box>
         </Slide>
       </Box>
-      <Button
+
+      <Fab
+        onClick={openForm}
         className={style.analysisOpenButton}
-        variant='contained'
-        disableElevation
-        onClick={handleChange}
+        variant='extended'
+        color='primary'
       >
-        Open Analysis Form
-      </Button>
+        {OpenFormButtonContent}
+      </Fab>
     </Fragment>
   );
 };
