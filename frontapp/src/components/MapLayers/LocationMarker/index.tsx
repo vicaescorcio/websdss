@@ -15,3 +15,5 @@ const LocationMarker = ({
     </Marker>
   );
 };
+
+export default LocationMarker;
