@@ -1,5 +1,6 @@
 'use client';
 import AnalysisForm from '@/components/Forms/AnalysisForm';
+import { AnalysisForm as AnalysisFormType } from '@/components/Forms/AnalysisForm/types';
 import HexGrid from '@/components/MapLayers/HexGrid';
 
 import dynamic from 'next/dynamic';
@@ -12,7 +13,7 @@ import {
 import L, { Layer, Map } from 'leaflet';
 import { HexProperties } from '@/components/MapLayers/HexGrid/types';
 
-const initialAnalysisForm: AnalysisForm = {
+const initialAnalysisForm: AnalysisFormType = {
   locationForm: {
     country: '',
     city: '',
@@ -35,7 +36,7 @@ const initialAnalysisForm: AnalysisForm = {
 };
 
 export default function Page() {
-  const analysisFormData = useRef<AnalysisForm>(initialAnalysisForm);
+  const analysisFormData = useRef<AnalysisFormType>(initialAnalysisForm);
   const [cityGeoJson, setCityGeoJson] =
     useState<GeoJSON.FeatureCollection | null>(null);
 

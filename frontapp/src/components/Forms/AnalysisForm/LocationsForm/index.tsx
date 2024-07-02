@@ -16,7 +16,7 @@ import { LocationOn, Remove, Info } from '@mui/icons-material';
 
 import style from './style.module.css';
 
-import { LocationForm, LocationPoint } from './types';
+import { LocationForm as LocationFormType, LocationPoint } from './types';
 import { AnalysisForm } from '../types';
 
 import fortalezaHexagons from '@/../public/fortaleza-hexgrid-2.json';
@@ -27,13 +27,13 @@ export default function LocationForm({
   setLocationFormData,
   setCityGeoJson,
 }: {
-  locationFormData: LocationForm;
-  setLocationFormData: React.Dispatch<React.SetStateAction<LocationForm>>;
+  locationFormData: LocationFormType;
+  setLocationFormData: React.Dispatch<React.SetStateAction<LocationFormType>>;
   formData: AnalysisForm;
   setCityGeoJson: (value: any) => void;
 }) {
   const handleChange = (e: any) => {
-    setLocationFormData((previous: LocationForm) => {
+    setLocationFormData((previous: LocationFormType) => {
       const newLocationData = {
         ...previous,
         [e.target.name]: e.target.value,
@@ -154,7 +154,7 @@ export default function LocationForm({
                       return el;
                     });
 
-                  setLocationFormData((previous: LocationForm) => {
+                  setLocationFormData((previous: LocationFormType) => {
                     const newLocationData = {
                       ...previous,
                       points: formData.locationForm.points,

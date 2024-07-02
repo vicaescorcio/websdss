@@ -2,32 +2,22 @@ import { SetStateAction, useState } from 'react';
 
 import {
   FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
   FormLabel,
   Slider,
   Box,
   Divider,
-  IconButton,
-  Typography,
   Tooltip,
-  Button,
-  ButtonGroup,
   RadioGroup,
   Radio,
   FormControlLabel,
-  Grid,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
 import Info from '@mui/icons-material/Info';
 
 import { AnalysisForm } from '../types';
-import { AccessibilityForm } from './types';
+import { AccessibilityForm as AccessibilityFormType } from './types';
 
 import style from './style.module.css';
 
@@ -90,12 +80,11 @@ const models = [
 ];
 
 const AccessibilityForm = ({ formData }: { formData: AnalysisForm }) => {
-  const [accessibilityForm, setAccessibilityForm] = useState<AccessibilityForm>(
-    formData.accessibilityForm
-  );
+  const [accessibilityForm, setAccessibilityForm] =
+    useState<AccessibilityFormType>(formData.accessibilityForm);
 
   const handleChange = (e: any) => {
-    setAccessibilityForm((previous: AccessibilityForm) => {
+    setAccessibilityForm((previous: AccessibilityFormType) => {
       const newAccessibilityData = {
         ...previous,
         [e.target.name]: e.target.value,

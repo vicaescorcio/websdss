@@ -10,7 +10,7 @@ import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 
 import { startAnalysis, AnalysisFormState } from './actions';
 
-import { AnalysisForm } from './types';
+import { AnalysisForm as AnalysisFormType } from './types';
 import * as LocationFormTypes from './LocationsForm/types';
 
 import style from './style.module.css';
@@ -34,7 +34,7 @@ const AnalysisForm = ({
   setLocationFormData: React.Dispatch<
     React.SetStateAction<LocationFormTypes.LocationForm>
   >;
-  analysisFormData: MutableRefObject<AnalysisForm>;
+  analysisFormData: MutableRefObject<AnalysisFormType>;
   setCityGeoJson: (value: any) => void;
 }) => {
   const [checked, setChecked] = useState(false);

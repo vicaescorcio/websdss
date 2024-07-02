@@ -16,18 +16,20 @@ import {
   Tooltip,
   TextField,
 } from '@mui/material';
-import { Remove, Groups, Info, RemoveCircleOutline } from '@mui/icons-material';
+import { Groups, Info, RemoveCircleOutline } from '@mui/icons-material';
 import style from './style.module.css';
 import { AnalysisForm } from '../types';
-import { GroupCriteria, MultiCriteriaForm } from './types.d';
+import {
+  GroupCriteria,
+  MultiCriteriaForm as MultiCriteriaFormType,
+} from './types.d';
 
 const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
-  const [multiCriteriaForm, setMultiCriteriaForm] = useState<MultiCriteriaForm>(
-    formData.multiCriteriaForm
-  );
+  const [multiCriteriaForm, setMultiCriteriaForm] =
+    useState<MultiCriteriaFormType>(formData.multiCriteriaForm);
 
   const handleChange = (e: any) => {
-    setMultiCriteriaForm((previous: MultiCriteriaForm) => {
+    setMultiCriteriaForm((previous: MultiCriteriaFormType) => {
       const newMultiCriteriaData = {
         ...previous,
         [e.target.name]: e.target.value,
@@ -109,7 +111,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
       <FormGroup className={style.formControl}>
         <Button
           onClick={(e) => {
-            setMultiCriteriaForm((previous: MultiCriteriaForm) => {
+            setMultiCriteriaForm((previous: MultiCriteriaFormType) => {
               const newMultiCriteriaData = {
                 ...previous,
                 groups: [
@@ -177,7 +179,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
                       return el;
                     });
 
-                  setMultiCriteriaForm((previous: MultiCriteriaForm) => {
+                  setMultiCriteriaForm((previous: MultiCriteriaFormType) => {
                     const newMultiCriteriaData = {
                       ...previous,
                       groups: formData.multiCriteriaForm.groups,
@@ -206,7 +208,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
                         return el;
                       });
 
-                    setMultiCriteriaForm((previous: MultiCriteriaForm) => {
+                    setMultiCriteriaForm((previous: MultiCriteriaFormType) => {
                       const newMultiCriteriaData = {
                         ...previous,
                         groups: formData.multiCriteriaForm.groups,
@@ -218,7 +220,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
               </FormControl>
               <IconButton
                 onClick={(e) => {
-                  setMultiCriteriaForm((previous: MultiCriteriaForm) => {
+                  setMultiCriteriaForm((previous: MultiCriteriaFormType) => {
                     const newGroups = previous.groups.filter(
                       (el, i) => i !== index
                     );
