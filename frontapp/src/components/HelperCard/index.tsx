@@ -19,7 +19,7 @@ const steps = [
         <Typography variant='body1' gutterBottom>
           Select the points of interest you want to analyze. You can choose up
           to 4 points of interest. First, select the city and country where you
-          want to analyze accessibility. Then, click on 'Add points of interest'
+          want to analyze accessibility. Then, click on Add points of interest
           to pin locations on the blue area of the map. It is recommended to
           select points of interest that are relevant to the population groups
           you want to analyze.

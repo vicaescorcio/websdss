@@ -25,7 +25,7 @@ describe('Home', () => {
   it('renders a heading', () => {
     render(<Map posix={[-3.731862, -38.526669]} />);
 
-    const heading = screen.getByText('Hey ho');
+    const heading = screen.getByText('Leaflet');
 
     expect(heading).toBeInTheDocument();
   });
