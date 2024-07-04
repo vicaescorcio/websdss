@@ -1,7 +1,7 @@
 'use client';
 import { useFormState } from 'react-dom';
 import { useState, useRef, Fragment, MutableRefObject } from 'react';
-import { Fab, Slide, Box } from '@mui/material';
+import { Fab, Slide, Box, Typography, Modal } from '@mui/material';
 import LocationForm from './LocationsForm';
 import AccessibilityForm from './AccessibilityForm';
 import MultiCriteriaForm from './MultiCriteriaForm';
@@ -14,6 +14,7 @@ import { AnalysisForm as AnalysisFormType } from './types';
 import * as LocationFormTypes from './LocationsForm/types';
 
 import style from './style.module.css';
+import HelperCard from '@/components/HelperCard';
 
 const initialState: AnalysisFormState = {
   locations: [],
@@ -39,6 +40,7 @@ const AnalysisForm = ({
 }) => {
   const [checked, setChecked] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
+  const [openHelperModal, setOpenHelperModal] = useState(false);
   const [state, formAction] = useFormState(startAnalysis, initialState);
   const OpenFormButtonContent = checked ? (
     <Fragment>
@@ -86,7 +88,12 @@ const AnalysisForm = ({
             action={formAction}
             className={style.analysisForm}
           >
-            <Stepper steps={steps}></Stepper>
+            <Stepper
+              steps={steps}
+              onHelperClick={() => {
+                setOpenHelperModal(true);
+              }}
+            ></Stepper>
           </Box>
         </Slide>
       </Box>
@@ -99,6 +106,17 @@ const AnalysisForm = ({
       >
         {OpenFormButtonContent}
       </Fab>
+
+      <Modal
+        open={openHelperModal}
+        onClose={() => {
+          setOpenHelperModal(false);
+        }}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <HelperCard />
+      </Modal>
     </Fragment>
   );
 };

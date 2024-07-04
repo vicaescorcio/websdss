@@ -16,8 +16,10 @@ type Step = {
 
 export default function HorizontalNonLinearStepper({
   steps,
+  onHelperClick,
 }: {
   steps: Step[];
+  onHelperClick: () => void;
 }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState<{
@@ -95,7 +97,7 @@ export default function HorizontalNonLinearStepper({
         <React.Fragment>{steps[activeStep].component}</React.Fragment>
       )}
       <Box className={style.stepperActions}>
-        <IconButton>
+        <IconButton onClick={onHelperClick}>
           <Help />
         </IconButton>
         <Button disabled={activeStep === 0} onClick={handleBack}>
