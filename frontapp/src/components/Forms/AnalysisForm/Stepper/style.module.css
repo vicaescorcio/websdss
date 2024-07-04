@@ -1,0 +1,16 @@
+.stepperContainer {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stepperActions {
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  width: 100%;
+  > .submitButton {
+    margin-left: auto;
+  }
+}
