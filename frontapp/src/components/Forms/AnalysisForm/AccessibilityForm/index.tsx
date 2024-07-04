@@ -110,7 +110,7 @@ const AccessibilityForm = ({ formData }: { formData: AnalysisForm }) => {
             id='radio-model-label'
             sx={{ display: 'flex', alignItems: 'center' }}
           >
-            <Tooltip title='dasdasdasd'>
+            <Tooltip title='Choose accessibility analysis type (see helper card for more details).'>
               <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
             </Tooltip>
             Accessibility Model
@@ -144,7 +144,7 @@ const AccessibilityForm = ({ formData }: { formData: AnalysisForm }) => {
             id='radio-year-label'
             sx={{ display: 'flex', alignItems: 'center' }}
           >
-            <Tooltip title='dasdasdasd'>
+            <Tooltip title='Base year of the data used for the analysis.'>
               <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
             </Tooltip>
             Year
@@ -179,7 +179,7 @@ const AccessibilityForm = ({ formData }: { formData: AnalysisForm }) => {
           id='radio-transport-mode-label'
           sx={{ display: 'flex', alignItems: 'center' }}
         >
-          <Tooltip title='dasdasdasd'>
+          <Tooltip title='Type of transportation used for displacement in the analysis'>
             <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
           </Tooltip>
           Transport Mode
@@ -211,7 +211,7 @@ const AccessibilityForm = ({ formData }: { formData: AnalysisForm }) => {
       <Divider sx={{ mb: '20px' }} />
       <FormControl className={style.formControl}>
         <FormLabel sx={{ display: 'flex', alignItems: 'center' }}>
-          <Tooltip title='dasdasdasd'>
+          <Tooltip title='Distance threshold of the displacement based on travel time (defines catchment area).'>
             <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
           </Tooltip>
           Travel Time

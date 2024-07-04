@@ -44,7 +44,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
     <Box className={style.multiCriteriaFormContainer}>
       <FormControl className={style.formControl}>
         <FormLabel sx={{ display: 'flex', alignItems: 'center' }}>
-          <Tooltip title='dasdasdasd'>
+          <Tooltip title='Range of per capita income of individuals of the group.'>
             <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
           </Tooltip>
           Income Range
@@ -64,7 +64,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
       <Divider sx={{ mb: '20px' }} />
       <FormControl className={style.formControl}>
         <FormLabel sx={{ display: 'flex', alignItems: 'center' }}>
-          <Tooltip title='dasdasdasd'>
+          <Tooltip title='Range of age of individuals the group.'>
             <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
           </Tooltip>
           Age Range
@@ -88,7 +88,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
           id='radio-gender-label'
           sx={{ display: 'flex', alignItems: 'center' }}
         >
-          <Tooltip title='dasdasdasd'>
+          <Tooltip title='Gender of inviduals of the group.'>
             <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
           </Tooltip>
           Gender

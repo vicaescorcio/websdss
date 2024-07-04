@@ -49,7 +49,7 @@ export default function LocationForm({
     <Box className={style.locationFormContainer}>
       <FormControl className={style.formControl}>
         <InputLabel id='label-country' className={style.inputLabel}>
-          <Tooltip title='dasdasdasd'>
+          <Tooltip title='Filter city by country'>
             <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
           </Tooltip>{' '}
           Country
@@ -75,7 +75,7 @@ export default function LocationForm({
           sx={{ pointerEvents: 'auto' }}
         >
           {' '}
-          <Tooltip title='dasdasdasd'>
+          <Tooltip title='City where the analysis will take place.'>
             <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
           </Tooltip>
           City
