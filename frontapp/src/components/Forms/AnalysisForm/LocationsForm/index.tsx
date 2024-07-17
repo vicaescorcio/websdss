@@ -19,7 +19,7 @@ import style from './style.module.css';
 import { LocationForm as LocationFormType, LocationPoint } from './types';
 import { AnalysisForm } from '../types';
 
-import fortalezaHexagons from '@/../public/fortaleza-hexgrid-2.json';
+import fortalezaHexagons from '@/../public/sectors_h3.json';
 
 export default function LocationForm({
   formData,
