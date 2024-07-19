@@ -1,6 +1,15 @@
 'use client';
 import { useState, useRef, Fragment, MutableRefObject } from 'react';
-import { Fab, Slide, Box, Typography, Modal } from '@mui/material';
+import {
+  Fab,
+  Slide,
+  Box,
+  Typography,
+  Modal,
+  LinearProgress,
+  CircularProgress,
+  Container,
+} from '@mui/material';
 import LocationForm from './LocationsForm';
 import AccessibilityForm from './AccessibilityForm';
 import MultiCriteriaForm from './MultiCriteriaForm';
@@ -19,6 +28,7 @@ const AnalysisForm = ({
   analysisFormData,
   setCityGeoJson,
   handleSubmit,
+  submitting,
 }: {
   locationFormData: LocationFormTypes.LocationForm;
   setLocationFormData: React.Dispatch<
@@ -27,6 +37,7 @@ const AnalysisForm = ({
   analysisFormData: MutableRefObject<AnalysisFormType>;
   setCityGeoJson: (value: any) => void;
   handleSubmit: (params: any) => void;
+  submitting: boolean;
 }) => {
   const [checked, setChecked] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
@@ -73,13 +84,27 @@ const AnalysisForm = ({
       <Box className={style.analysisFormContainer}>
         <Slide in={checked} container={containerRef.current}>
           <Box component='form' className={style.analysisForm}>
-            <Stepper
-              steps={steps}
-              onHelperClick={() => {
-                setOpenHelperModal(true);
-              }}
-              onSubmit={handleSubmit}
-            ></Stepper>
+            {submitting ? (
+              <Container>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                  }}
+                >
+                  <Typography variant='body2'>Calculating...</Typography>
+                </Box>
+                <LinearProgress />
+              </Container>
+            ) : (
+              <Stepper
+                steps={steps}
+                onHelperClick={() => {
+                  setOpenHelperModal(true);
+                }}
+                onSubmit={handleSubmit}
+              ></Stepper>
+            )}
           </Box>
         </Slide>
       </Box>

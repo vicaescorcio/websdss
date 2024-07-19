@@ -4,7 +4,6 @@ import { AnalysisForm as AnalysisFormType } from '@/components/Forms/AnalysisFor
 
 import dynamic from 'next/dynamic';
 import { useMemo, useRef, useState } from 'react';
-import style from './page.module.css';
 import {
   LocationForm,
   LocationPoint,
@@ -92,7 +91,6 @@ export default function Page() {
   const HexGrid = useMemo(
     () =>
       dynamic(() => import('@/components/MapLayers/HexGrid'), {
-        loading: () => <p>A map is loading</p>,
         ssr: false,
       }),
     []
@@ -100,7 +98,6 @@ export default function Page() {
 
   return (
     <div>
-      {submitting && <LinearProgress sx={{ zIndex: 400 }} />}
       <Map posix={[-3.731862, -38.526669]}>
         <HexGrid
           data={cityGeoJson as GeoJSON.FeatureCollection}
@@ -115,6 +112,7 @@ export default function Page() {
         analysisFormData={analysisFormData}
         setCityGeoJson={setCityGeoJson}
         handleSubmit={handleSubmit}
+        submitting={submitting}
       />
     </div>
   );
