@@ -1,5 +1,4 @@
 'use client';
-import { useFormState } from 'react-dom';
 import { useState, useRef, Fragment, MutableRefObject } from 'react';
 import { Fab, Slide, Box, Typography, Modal } from '@mui/material';
 import LocationForm from './LocationsForm';
@@ -8,28 +7,18 @@ import MultiCriteriaForm from './MultiCriteriaForm';
 import Stepper from './Stepper';
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 
-import { startAnalysis, AnalysisFormState } from './actions';
-
 import { AnalysisForm as AnalysisFormType } from './types';
 import * as LocationFormTypes from './LocationsForm/types';
 
 import style from './style.module.css';
 import HelperCard from '@/components/HelperCard';
 
-const initialState: AnalysisFormState = {
-  locations: [],
-  accessibility: {
-    mode: 'walking',
-    distance: 1000,
-  },
-  criteria: [],
-};
-
 const AnalysisForm = ({
   locationFormData,
   setLocationFormData,
   analysisFormData,
   setCityGeoJson,
+  handleSubmit,
 }: {
   locationFormData: LocationFormTypes.LocationForm;
   setLocationFormData: React.Dispatch<
@@ -37,11 +26,11 @@ const AnalysisForm = ({
   >;
   analysisFormData: MutableRefObject<AnalysisFormType>;
   setCityGeoJson: (value: any) => void;
+  handleSubmit: (params: any) => void;
 }) => {
   const [checked, setChecked] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
   const [openHelperModal, setOpenHelperModal] = useState(false);
-  const [state, formAction] = useFormState(startAnalysis, initialState);
   const OpenFormButtonContent = checked ? (
     <Fragment>
       <ArrowDownward sx={{ mr: 2 }} />
@@ -83,16 +72,13 @@ const AnalysisForm = ({
     <Fragment>
       <Box className={style.analysisFormContainer}>
         <Slide in={checked} container={containerRef.current}>
-          <Box
-            component='form'
-            action={formAction}
-            className={style.analysisForm}
-          >
+          <Box component='form' className={style.analysisForm}>
             <Stepper
               steps={steps}
               onHelperClick={() => {
                 setOpenHelperModal(true);
               }}
+              onSubmit={handleSubmit}
             ></Stepper>
           </Box>
         </Slide>

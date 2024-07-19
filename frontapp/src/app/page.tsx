@@ -9,7 +9,8 @@ import {
   LocationForm,
   LocationPoint,
 } from '@/components/Forms/AnalysisForm/LocationsForm/types';
-import { HexProperties } from '@/components/MapLayers/HexGrid/types';
+import { Container, LinearProgress } from '@mui/material';
+import { AccessibilityPayload } from './api/accessibility/route';
 
 const initialAnalysisForm: AnalysisFormType = {
   locationForm: {
@@ -28,8 +29,11 @@ const initialAnalysisForm: AnalysisFormType = {
   multiCriteriaForm: {
     groups: [],
     gender: 'male',
+    weight: 0.25,
     incomeRange: [0, 100000],
     ageRange: [0, 10],
+    criteriaType: 'max',
+    ageLevel: '6_a_10_anos',
   },
 };
 
@@ -42,10 +46,44 @@ export default function Page() {
     analysisFormData.current.locationForm
   );
 
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    setSubmitting(true);
+
+    const accessibilityAnalysisParams: AccessibilityPayload = {
+      pointsOfInterest: locationFormData.points.map(
+        (point: LocationPoint) => point.hexId
+      ),
+      groupCriteria: analysisFormData.current.multiCriteriaForm.groups,
+      accessibilityOptions: {
+        travelTime: analysisFormData.current.accessibilityForm.travelTime,
+        transportMode: analysisFormData.current.accessibilityForm.transportMode,
+        accessibilityModel: analysisFormData.current.accessibilityForm.model,
+      },
+    };
+    console.log(accessibilityAnalysisParams);
+    const response = await fetch('/api/accessibility', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(accessibilityAnalysisParams),
+    });
+    console.log(response);
+    setSubmitting(false);
+    return {};
+  };
+
   const Map = useMemo(
     () =>
       dynamic(() => import('@/components/Map/'), {
-        loading: () => <p>A map is loading</p>,
+        loading: () => (
+          <Container>
+            <LinearProgress />
+          </Container>
+        ),
         ssr: false,
       }),
     []
@@ -62,6 +100,7 @@ export default function Page() {
 
   return (
     <div>
+      {submitting && <LinearProgress sx={{ zIndex: 400 }} />}
       <Map posix={[-3.731862, -38.526669]}>
         <HexGrid
           data={cityGeoJson as GeoJSON.FeatureCollection}
@@ -69,11 +108,13 @@ export default function Page() {
           analysisFormData={analysisFormData}
         />
       </Map>
+
       <AnalysisForm
         locationFormData={locationFormData}
         setLocationFormData={setLocationFormData}
         analysisFormData={analysisFormData}
         setCityGeoJson={setCityGeoJson}
+        handleSubmit={handleSubmit}
       />
     </div>
   );

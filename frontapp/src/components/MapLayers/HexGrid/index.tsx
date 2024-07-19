@@ -30,7 +30,8 @@ const HexGrid = ({
         marker.remove();
         const newPoints = previous.points.filter(
           (el, i) =>
-            el.hexId != (feature.properties?.id || `${point[0]}-${point[1]}`)
+            el.hexId !=
+            (feature.properties?.h3_polyfill || `${point[0]}-${point[1]}`)
         );
         const newLocationData = { ...previous, points: newPoints };
         analysisFormData.current.locationForm = newLocationData;
@@ -46,7 +47,7 @@ const HexGrid = ({
         points: [
           ...previous.points,
           {
-            hexId: feature.properties?.id || `${point[0]}-${point[1]}`,
+            hexId: feature.properties?.h3_polyfill || `${point[0]}-${point[1]}`,
             latitude: point[0],
             longitude: point[1],
             name: 'point',

@@ -1,58 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  readData,
-  GroupCriteria,
-  AccessibilityOptions,
-} from '@/utils/modules/accessibility';
+import { readData, AccessibilityOptions } from '@/utils/modules/accessibility';
 import * as MCDMA from '@/utils/modules/mcdma';
-
-const groupCriteria: GroupCriteria[] = [
-  {
-    name: 'Group 1',
-    avgIncomePerCapita: [1000, 1200],
-    ageRange: [0, 100],
-    criteriaType: 'max',
-    weight: 0.25,
-  },
-  {
-    name: 'Group 2',
-    avgIncomePerCapita: [0, 800],
-    ageRange: [100, 200],
-    criteriaType: 'max',
-    weight: 0.25,
-  },
-  {
-    name: 'Group 3',
-    avgIncomePerCapita: [1600, 2400],
-    ageRange: [200, 300],
-    criteriaType: 'max',
-    weight: 0.25,
-  },
-  {
-    name: 'Group 4',
-    avgIncomePerCapita: [2400, 3200],
-    ageRange: [300, 400],
-    criteriaType: 'max',
-    weight: 0.25,
-  },
-]; // populate with actual groupCriteria
-const pointsOfInterest = [0, 1, 2, 3]; // populate with actual hexLocation
-const accessibilityOptions: AccessibilityOptions = {
-  travelTime: 10,
-  transportMode: 'car',
-  accessibilityType: 'active',
-};
+import { GroupCriteria } from '@/components/Forms/AnalysisForm/MultiCriteriaForm/types';
 
 export type AccessibilityPayload = {
-  pointsOfInterest: number[];
+  pointsOfInterest: string[];
   groupCriteria: GroupCriteria[];
   accessibilityOptions: AccessibilityOptions;
-};
-
-const mockedPayload: AccessibilityPayload = {
-  pointsOfInterest,
-  groupCriteria,
-  accessibilityOptions,
 };
 
 export async function POST(request: NextRequest, response: NextResponse) {
@@ -88,11 +42,15 @@ export async function POST(request: NextRequest, response: NextResponse) {
       );
     }
 
+    console.log(pointsOfInterest, groupCriteria, accessibilityOptions);
+
     const accessibilityAnalysisResult = await readData(
       pointsOfInterest,
       groupCriteria,
       accessibilityOptions
     );
+
+    console.log(accessibilityAnalysisResult);
 
     const decisionMatrix: number[][] = Object.values(
       accessibilityAnalysisResult

@@ -145,7 +145,15 @@ const apply = (matrix: number[][], weights: number[], criteria: string[]) => {
   return ranking;
 };
 
-export { apply };
+export {
+  apply,
+  normalizeMatrix,
+  weightedNormalizedMatrix,
+  idealSolutions,
+  separationMeasures,
+  relativeCloseness,
+  rankAlternatives,
+};
 
 // Example usage:
 // let decisionMatrix: number[][] = [

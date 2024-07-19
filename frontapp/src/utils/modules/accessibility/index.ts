@@ -1,19 +1,12 @@
+import { GroupCriteria } from '@/components/Forms/AnalysisForm/MultiCriteriaForm/types';
 import fs from 'fs';
 import { parser } from 'stream-json';
 import { streamArray } from 'stream-json/streamers/StreamArray';
 
-export type GroupCriteria = {
-  name: string;
-  avgIncomePerCapita: number[];
-  ageRange: number[];
-  weight: number;
-  criteriaType: 'max' | 'min';
-};
-
 export type AccessibilityOptions = {
   travelTime: number;
   transportMode: string;
-  accessibilityType: 'active' | 'passive';
+  accessibilityModel: 'active' | 'passive';
 };
 
 // Example returned value:
@@ -44,7 +37,7 @@ export type AccessibilityOptions = {
 //    }
 // }
 function readData(
-  hexLocations: number[],
+  hexLocations: string[],
   groupCriteria: GroupCriteria[],
   accessibilityOptions: AccessibilityOptions
 ): Promise<any[]> {
@@ -58,7 +51,7 @@ function readData(
       .pipe(parser())
       .pipe(streamArray())
       .on('data', (d: any) => {
-        const result = processData2(
+        const result = processData(
           d.value,
           accessibilityOptions,
           hexLocations,
@@ -79,44 +72,31 @@ function readData(
 function processData(
   data: any,
   accessibilityOptions: AccessibilityOptions,
-  hexLocations: number[]
-) {
-  if (
-    hexLocations.includes(data.properties.to_id) &&
-    data.properties.travel_time <= accessibilityOptions.travelTime
-  ) {
-    return data;
-  }
-}
-
-function processData2(
-  data: any,
-  accessibilityOptions: AccessibilityOptions,
-  hexLocations: number[],
+  hexLocations: string[],
   groupCriteria: GroupCriteria[]
 ) {
   const criteriaMatrix: any = {};
   if (
-    hexLocations.includes(data.properties.to_id) &&
+    hexLocations.includes(data.properties.h3_polyfill_destino) &&
     data.properties.travel_time <= accessibilityOptions.travelTime
   ) {
     groupCriteria.forEach((criteria) => {
       if (
         !(
-          criteriaMatrix[data.properties.to_id] &&
-          criteriaMatrix[data.properties.to_id][criteria.name]
+          criteriaMatrix[data.properties.h3_polyfill_destino] &&
+          criteriaMatrix[data.properties.h3_polyfill_destino][criteria.name]
         )
       ) {
-        criteriaMatrix[data.properties.to_id] = {
-          ...criteriaMatrix[data.properties.to_id],
+        criteriaMatrix[data.properties.h3_polyfill_destino] = {
+          ...criteriaMatrix[data.properties.h3_polyfill_destino],
           [criteria.name]: 0,
         };
       }
       if (
-        data.properties.renda_per_capita >= criteria.avgIncomePerCapita[0] &&
-        data.properties.renda_per_capita < criteria.avgIncomePerCapita[1]
+        data.properties.renda_per_capita >= criteria.incomeRange[0] &&
+        data.properties.renda_per_capita < criteria.incomeRange[1]
       )
-        criteriaMatrix[data.properties.to_id][criteria.name] +=
+        criteriaMatrix[data.properties.h3_polyfill_destino][criteria.name] +=
           data.properties.total;
     });
     return criteriaMatrix;

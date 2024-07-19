@@ -17,9 +17,11 @@ type Step = {
 export default function HorizontalNonLinearStepper({
   steps,
   onHelperClick,
+  onSubmit,
 }: {
   steps: Step[];
   onHelperClick: () => void;
+  onSubmit: (params: any) => void;
 }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState<{
@@ -117,7 +119,7 @@ export default function HorizontalNonLinearStepper({
             //     : 'Complete Step'}
             // </Button>
           ))} */}
-        <Button className={style.submitButton} type='submit'>
+        <Button className={style.submitButton} onClick={onSubmit} type='submit'>
           Submit
         </Button>
       </Box>

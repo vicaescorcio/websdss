@@ -85,25 +85,60 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
       <Divider sx={{ mb: '20px' }} />
       <FormControl>
         <FormLabel
-          id='radio-gender-label'
+          id='radio-ageLevel-label'
           sx={{ display: 'flex', alignItems: 'center' }}
         >
-          <Tooltip title='Gender of inviduals of the group.'>
+          <Tooltip title='Age range of inviduals of the group.'>
             <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
           </Tooltip>
-          Gender
+          Age Level
         </FormLabel>
         <RadioGroup
           row
-          aria-labelledby='radio-gender-label'
-          name='gender'
+          aria-labelledby='radio-ageLevel-label'
+          name='ageLevel'
           onChange={handleChange}
           sx={{ color: 'black' }}
-          value={multiCriteriaForm.gender}
+          value={multiCriteriaForm.ageLevel}
         >
-          <FormControlLabel value='female' control={<Radio />} label='Female' />
-          <FormControlLabel value='male' control={<Radio />} label='Male' />
-          <FormControlLabel value='other' control={<Radio />} label='Other' />
+          <FormControlLabel
+            value='0_a_5_anos'
+            control={<Radio />}
+            label='0 a 5 anos'
+          />
+          <FormControlLabel
+            value='6_a_10_anos'
+            control={<Radio />}
+            label='6 a 10 anos'
+          />
+          <FormControlLabel
+            value='11_a_14_anos'
+            control={<Radio />}
+            label='11 a 14 anos'
+          />
+        </RadioGroup>
+      </FormControl>
+      <Divider sx={{ mb: '20px' }} />
+      <FormControl>
+        <FormLabel
+          id='radio-criteriaType-label'
+          sx={{ display: 'flex', alignItems: 'center' }}
+        >
+          <Tooltip title='Determine if criteria is max or min'>
+            <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
+          </Tooltip>
+          Criteria Type
+        </FormLabel>
+        <RadioGroup
+          row
+          aria-labelledby='radio-criteria-type-label'
+          name='criteriaType'
+          onChange={handleChange}
+          sx={{ color: 'black' }}
+          value={multiCriteriaForm.criteriaType}
+        >
+          <FormControlLabel value='max' control={<Radio />} label='Max' />
+          <FormControlLabel value='min' control={<Radio />} label='Min' />
         </RadioGroup>
       </FormControl>
       <Divider sx={{ mb: '20px' }} />
@@ -118,9 +153,10 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
                   ...previous.groups,
                   {
                     name: `Group ${previous.groups.length + 1}`,
-                    weight: 0,
+                    weight: multiCriteriaForm.weight,
                     incomeRange: multiCriteriaForm.incomeRange,
                     ageRange: multiCriteriaForm.ageRange,
+                    criteriaType: multiCriteriaForm.criteriaType,
                   } as GroupCriteria,
                 ],
               };
