@@ -4,12 +4,12 @@ import { AnalysisForm as AnalysisFormType } from '@/components/Forms/AnalysisFor
 
 import dynamic from 'next/dynamic';
 import { useMemo, useRef, useState } from 'react';
-import style from './page.module.css';
 import {
   LocationForm,
   LocationPoint,
 } from '@/components/Forms/AnalysisForm/LocationsForm/types';
-import { HexProperties } from '@/components/MapLayers/HexGrid/types';
+import { Alert, Container, LinearProgress } from '@mui/material';
+import { AccessibilityPayload } from './api/accessibility/route';
 
 const initialAnalysisForm: AnalysisFormType = {
   locationForm: {
@@ -28,8 +28,10 @@ const initialAnalysisForm: AnalysisFormType = {
   multiCriteriaForm: {
     groups: [],
     gender: 'male',
+    weight: 0.25,
     incomeRange: [0, 100000],
-    ageRange: [0, 10],
+    criteriaType: 'max',
+    ageLevel: ['6_a_10_anos'],
   },
 };
 
@@ -42,10 +44,43 @@ export default function Page() {
     analysisFormData.current.locationForm
   );
 
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    setSubmitting(true);
+
+    const accessibilityAnalysisParams: AccessibilityPayload = {
+      pointsOfInterest: locationFormData.points.map(
+        (point: LocationPoint) => point.hexId
+      ),
+      groupCriteria: analysisFormData.current.multiCriteriaForm.groups,
+      accessibilityOptions: {
+        travelTime: analysisFormData.current.accessibilityForm.travelTime,
+        transportMode: analysisFormData.current.accessibilityForm.transportMode,
+        accessibilityModel: analysisFormData.current.accessibilityForm.model,
+      },
+    };
+
+    const response = await fetch('/api/accessibility', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(accessibilityAnalysisParams),
+    });
+    setSubmitting(false);
+    return {};
+  };
+
   const Map = useMemo(
     () =>
       dynamic(() => import('@/components/Map/'), {
-        loading: () => <p>A map is loading</p>,
+        loading: () => (
+          <Container>
+            <LinearProgress />
+          </Container>
+        ),
         ssr: false,
       }),
     []
@@ -54,7 +89,6 @@ export default function Page() {
   const HexGrid = useMemo(
     () =>
       dynamic(() => import('@/components/MapLayers/HexGrid'), {
-        loading: () => <p>A map is loading</p>,
         ssr: false,
       }),
     []
@@ -69,11 +103,14 @@ export default function Page() {
           analysisFormData={analysisFormData}
         />
       </Map>
+
       <AnalysisForm
         locationFormData={locationFormData}
         setLocationFormData={setLocationFormData}
         analysisFormData={analysisFormData}
         setCityGeoJson={setCityGeoJson}
+        handleSubmit={handleSubmit}
+        submitting={submitting}
       />
     </div>
   );

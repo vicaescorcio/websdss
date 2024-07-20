@@ -1,35 +1,35 @@
 'use client';
-import { useFormState } from 'react-dom';
 import { useState, useRef, Fragment, MutableRefObject } from 'react';
-import { Fab, Slide, Box, Typography, Modal } from '@mui/material';
+import {
+  Fab,
+  Slide,
+  Box,
+  Typography,
+  Modal,
+  LinearProgress,
+  Container,
+  Alert,
+} from '@mui/material';
 import LocationForm from './LocationsForm';
 import AccessibilityForm from './AccessibilityForm';
 import MultiCriteriaForm from './MultiCriteriaForm';
 import Stepper from './Stepper';
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 
-import { startAnalysis, AnalysisFormState } from './actions';
-
 import { AnalysisForm as AnalysisFormType } from './types';
 import * as LocationFormTypes from './LocationsForm/types';
 
 import style from './style.module.css';
 import HelperCard from '@/components/HelperCard';
-
-const initialState: AnalysisFormState = {
-  locations: [],
-  accessibility: {
-    mode: 'walking',
-    distance: 1000,
-  },
-  criteria: [],
-};
+import ReviewForm from '../ReviewForm';
 
 const AnalysisForm = ({
   locationFormData,
   setLocationFormData,
   analysisFormData,
   setCityGeoJson,
+  handleSubmit,
+  submitting,
 }: {
   locationFormData: LocationFormTypes.LocationForm;
   setLocationFormData: React.Dispatch<
@@ -37,11 +37,13 @@ const AnalysisForm = ({
   >;
   analysisFormData: MutableRefObject<AnalysisFormType>;
   setCityGeoJson: (value: any) => void;
+  handleSubmit: (params: any) => void;
+  submitting: boolean;
 }) => {
   const [checked, setChecked] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
   const [openHelperModal, setOpenHelperModal] = useState(false);
-  const [state, formAction] = useFormState(startAnalysis, initialState);
+  const [errors, setErrors] = useState<string[]>();
   const OpenFormButtonContent = checked ? (
     <Fragment>
       <ArrowDownward sx={{ mr: 2 }} />
@@ -65,14 +67,57 @@ const AnalysisForm = ({
           setCityGeoJson={setCityGeoJson}
         />
       ),
+      onValidate: (params: any) => {
+        if (analysisFormData.current.locationForm.points.length < 1) {
+          setErrors(['Please select at least one location']);
+          setTimeout(() => {
+            setErrors([]);
+          }, 2000);
+          return false;
+        } else {
+          return true;
+        }
+      },
     },
     {
       label: 'Set accessibility model parameters',
       component: <AccessibilityForm formData={analysisFormData.current} />,
+      onValidate: (params: any) => {
+        if (!analysisFormData.current.accessibilityForm.model) {
+          setErrors(['Please select an accessibility model']);
+          setTimeout(() => {
+            setErrors([]);
+          }, 4000);
+          return false;
+        } else {
+          return true;
+        }
+      },
     },
     {
       label: 'Add Population Group criteria and weights',
       component: <MultiCriteriaForm formData={analysisFormData.current} />,
+      onValidate: (params: any) => {
+        if (analysisFormData.current.multiCriteriaForm.groups.length < 1) {
+          setErrors(['Please add at least one group']);
+          setTimeout(() => {
+            setErrors([]);
+          }, 4000);
+          return false;
+        } else {
+          return true;
+        }
+      },
+    },
+    {
+      label: 'Review and Submit',
+      component: <ReviewForm formData={analysisFormData.current} />,
+      onValidate: (params: any) => {
+        setTimeout(() => {
+          setErrors([]);
+        }, 4000);
+        return true;
+      },
     },
   ];
 
@@ -83,17 +128,31 @@ const AnalysisForm = ({
     <Fragment>
       <Box className={style.analysisFormContainer}>
         <Slide in={checked} container={containerRef.current}>
-          <Box
-            component='form'
-            action={formAction}
-            className={style.analysisForm}
-          >
-            <Stepper
-              steps={steps}
-              onHelperClick={() => {
-                setOpenHelperModal(true);
-              }}
-            ></Stepper>
+          <Box component='form' className={style.analysisForm}>
+            {errors && errors.length > 0 && (
+              <Alert severity='error'>{errors.join(', ')}</Alert>
+            )}
+            {submitting ? (
+              <Container>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                  }}
+                >
+                  <Typography variant='body2'>Calculating...</Typography>
+                </Box>
+                <LinearProgress />
+              </Container>
+            ) : (
+              <Stepper
+                steps={steps}
+                onHelperClick={() => {
+                  setOpenHelperModal(true);
+                }}
+                onSubmit={handleSubmit}
+              ></Stepper>
+            )}
           </Box>
         </Slide>
       </Box>

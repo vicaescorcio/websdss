@@ -12,14 +12,14 @@ import {
   Tooltip,
   Divider,
 } from '@mui/material';
-import { LocationOn, Remove, Info } from '@mui/icons-material';
+import { LocationOn, Info } from '@mui/icons-material';
+
+import fortalezaHexagons from '@/../public/sectors_h3.json';
 
 import style from './style.module.css';
 
 import { LocationForm as LocationFormType, LocationPoint } from './types';
 import { AnalysisForm } from '../types';
-
-import fortalezaHexagons from '@/../public/fortaleza-hexgrid-2.json';
 
 export default function LocationForm({
   formData,

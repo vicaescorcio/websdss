@@ -2,13 +2,14 @@ export type GroupCriteria = {
   name: string;
   weight: number;
   incomeRange: number[];
-  ageRange: number[];
-  gender: string;
-  educationLevel?: string;
+  criteriaType: 'max' | 'min';
+  ageLevel: string[];
 };
 export type MultiCriteriaForm = {
   groups: GroupCriteria[];
   incomeRange: number[];
-  ageRange: number[];
   gender: string;
+  weight: number;
+  criteriaType: 'max' | 'min';
+  ageLevel: string[];
 };
