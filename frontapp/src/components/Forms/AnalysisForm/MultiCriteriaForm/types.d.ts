@@ -2,7 +2,6 @@ export type GroupCriteria = {
   name: string;
   weight: number;
   incomeRange: number[];
-  ageRange: number[];
   criteriaType: 'max' | 'min';
   ageLevel: string[];
 };
