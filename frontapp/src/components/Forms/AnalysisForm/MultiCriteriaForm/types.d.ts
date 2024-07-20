@@ -4,13 +4,13 @@ export type GroupCriteria = {
   incomeRange: number[];
   ageRange: number[];
   criteriaType: 'max' | 'min';
+  ageLevel: string[];
 };
 export type MultiCriteriaForm = {
   groups: GroupCriteria[];
   incomeRange: number[];
-  ageRange: number[];
   gender: string;
   weight: number;
   criteriaType: 'max' | 'min';
-  ageLevel: string;
+  ageLevel: string[];
 };

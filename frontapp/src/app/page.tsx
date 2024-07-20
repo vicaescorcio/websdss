@@ -30,9 +30,8 @@ const initialAnalysisForm: AnalysisFormType = {
     gender: 'male',
     weight: 0.25,
     incomeRange: [0, 100000],
-    ageRange: [0, 10],
     criteriaType: 'max',
-    ageLevel: '6_a_10_anos',
+    ageLevel: ['6_a_10_anos'],
   },
 };
 
@@ -62,6 +61,7 @@ export default function Page() {
         accessibilityModel: analysisFormData.current.accessibilityForm.model,
       },
     };
+
     const response = await fetch('/api/accessibility', {
       method: 'POST',
       headers: {

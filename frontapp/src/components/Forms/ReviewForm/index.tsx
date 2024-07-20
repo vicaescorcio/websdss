@@ -67,7 +67,7 @@ const ReviewForm = ({ formData }: { formData: AnalysisFormType }) => {
                   <b>Income Range:</b> {group.incomeRange}
                 </FormLabel>
                 <FormLabel>
-                  <b>Age Range:</b> {group.ageRange}
+                  <b>Age Levels:</b> {group.ageLevel.join(', ')}
                 </FormLabel>
                 <FormLabel>
                   <b>Weight:</b> {group.weight}

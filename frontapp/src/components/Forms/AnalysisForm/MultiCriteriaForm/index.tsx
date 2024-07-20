@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -15,6 +15,7 @@ import {
   Divider,
   Tooltip,
   TextField,
+  Checkbox,
 } from '@mui/material';
 import { Groups, Info, RemoveCircleOutline } from '@mui/icons-material';
 import style from './style.module.css';
@@ -27,6 +28,33 @@ import {
 const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
   const [multiCriteriaForm, setMultiCriteriaForm] =
     useState<MultiCriteriaFormType>(formData.multiCriteriaForm);
+
+  const isChecked = (value: string) => {
+    return multiCriteriaForm.ageLevel.filter((age) => age == value).length > 0
+      ? true
+      : false;
+  };
+  const handleCheckBoxChange = (event: any) => {
+    const value = event.target.value;
+
+    setMultiCriteriaForm((previous: MultiCriteriaFormType) => {
+      if (event.target.checked) {
+        const newMultiCriteriaData = {
+          ...previous,
+          ageLevel: [event.target.value, ...previous.ageLevel],
+        };
+        formData.multiCriteriaForm = newMultiCriteriaData;
+        return newMultiCriteriaData;
+      } else {
+        const newMultiCriteriaData = {
+          ...previous,
+          ageLevel: previous.ageLevel.filter((el) => el !== event.target.value),
+        };
+        formData.multiCriteriaForm = newMultiCriteriaData;
+        return newMultiCriteriaData;
+      }
+    });
+  };
 
   const handleChange = (e: any) => {
     setMultiCriteriaForm((previous: MultiCriteriaFormType) => {
@@ -62,27 +90,6 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
         />
       </FormControl>
       <Divider sx={{ mb: '20px' }} />
-      <FormControl className={style.formControl}>
-        <FormLabel sx={{ display: 'flex', alignItems: 'center' }}>
-          <Tooltip title='Range of age of individuals the group.'>
-            <Info fontSize='small' color='disabled' sx={{ mr: 1 }}></Info>
-          </Tooltip>
-          Age Range
-        </FormLabel>
-        <Slider
-          getAriaLabel={() => 'Age Range'}
-          value={multiCriteriaForm.ageRange}
-          max={100}
-          onChange={handleChange}
-          name='ageRange'
-          valueLabelDisplay='auto'
-          getAriaValueText={function valuetext(value: number) {
-            return `R$${value}`;
-          }}
-        />
-      </FormControl>
-
-      <Divider sx={{ mb: '20px' }} />
       <FormControl>
         <FormLabel
           id='radio-ageLevel-label'
@@ -93,7 +100,40 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
           </Tooltip>
           Age Level
         </FormLabel>
-        <RadioGroup
+
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isChecked('0_a_5_anos')}
+                value={'0_a_5_anos'}
+                onChange={handleCheckBoxChange}
+              />
+            }
+            label='0 a 5 years'
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                value={'6_a_10_anos'}
+                checked={isChecked('6_a_10_anos')}
+                onChange={handleCheckBoxChange}
+              />
+            }
+            label='6 a 10 years'
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                value={'11_a_14_anos'}
+                checked={isChecked('11_a_14_anos')}
+                onChange={handleCheckBoxChange}
+              />
+            }
+            label='11 a 14 years'
+          />
+        </FormGroup>
+        {/* <RadioGroup
           row
           aria-labelledby='radio-ageLevel-label'
           name='ageLevel'
@@ -116,7 +156,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
             control={<Radio />}
             label='11 a 14 anos'
           />
-        </RadioGroup>
+        </RadioGroup> */}
       </FormControl>
       <Divider sx={{ mb: '20px' }} />
       <FormControl>
@@ -155,7 +195,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
                     name: `Group ${previous.groups.length + 1}`,
                     weight: multiCriteriaForm.weight,
                     incomeRange: multiCriteriaForm.incomeRange,
-                    ageRange: multiCriteriaForm.ageRange,
+                    ageLevel: multiCriteriaForm.ageLevel,
                     criteriaType: multiCriteriaForm.criteriaType,
                   } as GroupCriteria,
                 ],

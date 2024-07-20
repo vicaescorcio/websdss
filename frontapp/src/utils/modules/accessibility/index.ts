@@ -96,8 +96,10 @@ function processData(
         data.properties.renda_per_capita >= criteria.incomeRange[0] &&
         data.properties.renda_per_capita < criteria.incomeRange[1]
       )
-        criteriaMatrix[data.properties.h3_polyfill_destino][criteria.name] +=
-          data.properties.total;
+        criteria.ageLevel.forEach((ageLevel: string) => {
+          criteriaMatrix[data.properties.h3_polyfill_destino][criteria.name] +=
+            data.properties[ageLevel];
+        });
     });
     return criteriaMatrix;
   }
