@@ -8,10 +8,12 @@ import Help from '@mui/icons-material/Help';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import style from './style.module.css';
+import { on } from 'events';
 
 type Step = {
   label: string;
   component: React.ReactNode;
+  onValidate: (params: any) => boolean;
 };
 
 export default function HorizontalNonLinearStepper({
@@ -44,7 +46,9 @@ export default function HorizontalNonLinearStepper({
     return completedSteps() === totalSteps();
   };
 
-  const handleNext = () => {
+  const handleNext = (params: any) => {
+    const { onValidate } = steps[activeStep];
+    if (!onValidate(params)) return;
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
@@ -62,12 +66,12 @@ export default function HorizontalNonLinearStepper({
     setActiveStep(step);
   };
 
-  const handleComplete = () => {
-    const newCompleted = completed;
-    newCompleted[activeStep] = true;
-    setCompleted(newCompleted);
-    handleNext();
-  };
+  // const handleComplete = () => {
+  //   const newCompleted = completed;
+  //   newCompleted[activeStep] = true;
+  //   setCompleted(newCompleted);
+  //   handleNext();
+  // };
 
   const handleReset = () => {
     setActiveStep(0);
@@ -119,7 +123,12 @@ export default function HorizontalNonLinearStepper({
             //     : 'Complete Step'}
             // </Button>
           ))} */}
-        <Button className={style.submitButton} onClick={onSubmit} type='submit'>
+        <Button
+          disabled={activeStep != steps.length - 1}
+          className={style.submitButton}
+          onClick={onSubmit}
+          type='submit'
+        >
           Submit
         </Button>
       </Box>

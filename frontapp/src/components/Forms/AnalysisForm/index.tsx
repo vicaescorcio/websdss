@@ -7,8 +7,8 @@ import {
   Typography,
   Modal,
   LinearProgress,
-  CircularProgress,
   Container,
+  Alert,
 } from '@mui/material';
 import LocationForm from './LocationsForm';
 import AccessibilityForm from './AccessibilityForm';
@@ -21,6 +21,7 @@ import * as LocationFormTypes from './LocationsForm/types';
 
 import style from './style.module.css';
 import HelperCard from '@/components/HelperCard';
+import ReviewForm from '../ReviewForm';
 
 const AnalysisForm = ({
   locationFormData,
@@ -42,6 +43,7 @@ const AnalysisForm = ({
   const [checked, setChecked] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
   const [openHelperModal, setOpenHelperModal] = useState(false);
+  const [errors, setErrors] = useState<string[]>();
   const OpenFormButtonContent = checked ? (
     <Fragment>
       <ArrowDownward sx={{ mr: 2 }} />
@@ -65,14 +67,57 @@ const AnalysisForm = ({
           setCityGeoJson={setCityGeoJson}
         />
       ),
+      onValidate: (params: any) => {
+        if (analysisFormData.current.locationForm.points.length < 1) {
+          setErrors(['Please select at least one location']);
+          setTimeout(() => {
+            setErrors([]);
+          }, 2000);
+          return false;
+        } else {
+          return true;
+        }
+      },
     },
     {
       label: 'Set accessibility model parameters',
       component: <AccessibilityForm formData={analysisFormData.current} />,
+      onValidate: (params: any) => {
+        if (!analysisFormData.current.accessibilityForm.model) {
+          setErrors(['Please select an accessibility model']);
+          setTimeout(() => {
+            setErrors([]);
+          }, 4000);
+          return false;
+        } else {
+          return true;
+        }
+      },
     },
     {
       label: 'Add Population Group criteria and weights',
       component: <MultiCriteriaForm formData={analysisFormData.current} />,
+      onValidate: (params: any) => {
+        if (analysisFormData.current.multiCriteriaForm.groups.length < 1) {
+          setErrors(['Please add at least one group']);
+          setTimeout(() => {
+            setErrors([]);
+          }, 4000);
+          return false;
+        } else {
+          return true;
+        }
+      },
+    },
+    {
+      label: 'Review and Submit',
+      component: <ReviewForm formData={analysisFormData.current} />,
+      onValidate: (params: any) => {
+        setTimeout(() => {
+          setErrors([]);
+        }, 4000);
+        return true;
+      },
     },
   ];
 
@@ -84,6 +129,9 @@ const AnalysisForm = ({
       <Box className={style.analysisFormContainer}>
         <Slide in={checked} container={containerRef.current}>
           <Box component='form' className={style.analysisForm}>
+            {errors && errors.length > 0 && (
+              <Alert severity='error'>{errors.join(', ')}</Alert>
+            )}
             {submitting ? (
               <Container>
                 <Box

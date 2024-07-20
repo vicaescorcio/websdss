@@ -8,7 +8,7 @@ import {
   LocationForm,
   LocationPoint,
 } from '@/components/Forms/AnalysisForm/LocationsForm/types';
-import { Container, LinearProgress } from '@mui/material';
+import { Alert, Container, LinearProgress } from '@mui/material';
 import { AccessibilityPayload } from './api/accessibility/route';
 
 const initialAnalysisForm: AnalysisFormType = {
@@ -62,7 +62,6 @@ export default function Page() {
         accessibilityModel: analysisFormData.current.accessibilityForm.model,
       },
     };
-    console.log(accessibilityAnalysisParams);
     const response = await fetch('/api/accessibility', {
       method: 'POST',
       headers: {
@@ -70,7 +69,6 @@ export default function Page() {
       },
       body: JSON.stringify(accessibilityAnalysisParams),
     });
-    console.log(response);
     setSubmitting(false);
     return {};
   };
