@@ -72,6 +72,7 @@ const ReviewForm = ({ formData }: { formData: AnalysisFormType }) => {
                 alignItems: 'center',
                 width: '50%',
               }}
+              key={index}
             >
               <Groups color={'primary'} />
               <FormLabel>
