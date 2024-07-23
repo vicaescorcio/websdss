@@ -8,8 +8,12 @@ import {
   LocationForm,
   LocationPoint,
 } from '@/components/Forms/AnalysisForm/LocationsForm/types';
-import { Alert, Container, LinearProgress } from '@mui/material';
-import { AccessibilityPayload } from './api/accessibility/route';
+import { Container, LinearProgress } from '@mui/material';
+import {
+  AccessibilityPayload,
+  AnalysisResult,
+} from './api/accessibility/types';
+import { ResultsFilter } from '@/components/Forms/AnalysisForm/ResultForm/types';
 
 const initialAnalysisForm: AnalysisFormType = {
   locationForm: {
@@ -45,6 +49,10 @@ export default function Page() {
   );
 
   const [submitting, setSubmitting] = useState(false);
+  const [results, setResults] = useState<AnalysisResult | null>(null);
+  const [resultsFilter, setResultsFilter] = useState<ResultsFilter | null>(
+    null
+  );
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -69,6 +77,9 @@ export default function Page() {
       },
       body: JSON.stringify(accessibilityAnalysisParams),
     });
+
+    setResults((await response.json()) as AnalysisResult);
+
     setSubmitting(false);
     return {};
   };
@@ -94,16 +105,31 @@ export default function Page() {
     []
   );
 
+  const ResultGrid = useMemo(
+    () =>
+      dynamic(() => import('@/components/MapLayers/ResultGrid'), {
+        ssr: false,
+      }),
+    []
+  );
   return (
     <div>
       <Map posix={[-3.731862, -38.526669]}>
-        <HexGrid
-          data={cityGeoJson as GeoJSON.FeatureCollection}
-          setLocationFormData={setLocationFormData}
-          analysisFormData={analysisFormData}
-        />
+        {!results ? (
+          <HexGrid
+            data={cityGeoJson as GeoJSON.FeatureCollection}
+            setLocationFormData={setLocationFormData}
+            analysisFormData={analysisFormData}
+          />
+        ) : (
+          <ResultGrid
+            data={cityGeoJson as GeoJSON.FeatureCollection}
+            results={results}
+            mainHex={resultsFilter?.hex}
+            mainGroup={resultsFilter?.group}
+          ></ResultGrid>
+        )}
       </Map>
-
       <AnalysisForm
         locationFormData={locationFormData}
         setLocationFormData={setLocationFormData}
@@ -111,6 +137,9 @@ export default function Page() {
         setCityGeoJson={setCityGeoJson}
         handleSubmit={handleSubmit}
         submitting={submitting}
+        results={results}
+        resultsFilter={resultsFilter}
+        setResultsFilter={setResultsFilter}
       />
     </div>
   );

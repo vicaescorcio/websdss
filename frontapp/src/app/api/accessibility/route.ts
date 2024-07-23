@@ -1,14 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readData, AccessibilityOptions } from '@/utils/modules/accessibility';
+import { readData } from '@/utils/modules/accessibility';
 import * as MCDMA from '@/utils/modules/mcdma';
-import { GroupCriteria } from '@/components/Forms/AnalysisForm/MultiCriteriaForm/types';
-
-export type AccessibilityPayload = {
-  pointsOfInterest: string[];
-  groupCriteria: GroupCriteria[];
-  accessibilityOptions: AccessibilityOptions;
-};
-
+import { AccessibilityPayload, AnalysisResult, RankedResult } from './types';
 export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const { pointsOfInterest, groupCriteria, accessibilityOptions } =
@@ -42,19 +35,29 @@ export async function POST(request: NextRequest, response: NextResponse) {
       );
     }
 
-    console.log(pointsOfInterest, groupCriteria, accessibilityOptions);
-
     const accessibilityAnalysisResult = await readData(
       pointsOfInterest,
       groupCriteria,
       accessibilityOptions
     );
-
-    console.log(accessibilityAnalysisResult);
+    console.log(
+      'params',
+      pointsOfInterest,
+      groupCriteria,
+      accessibilityOptions
+    );
+    console.log(
+      'results',
+      Object.values(accessibilityAnalysisResult).map((group: any) =>
+        Object.values(group).map((value: any) => value.hex)
+      )
+    );
 
     const decisionMatrix: number[][] = Object.values(
       accessibilityAnalysisResult
-    ).map((group: any) => Object.values(group));
+    ).map((group: any) =>
+      Object.values(group).map((value: any) => value.total)
+    );
 
     const weights = groupCriteria.map((criteria) => criteria.weight);
     const criteria = groupCriteria.map((criteria) => criteria.criteriaType);
@@ -64,16 +67,28 @@ export async function POST(request: NextRequest, response: NextResponse) {
       criteria
     );
 
-    // Example response to the client
-    return new Response(
-      JSON.stringify({ message: 'Data received', multiCriteriaAnalysisResult }),
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    const hexLocationsRanked = Object.keys(accessibilityAnalysisResult);
+    const rankedResults: RankedResult[] = multiCriteriaAnalysisResult.map(
+      (result) => {
+        return [
+          hexLocationsRanked[result],
+          accessibilityAnalysisResult[hexLocationsRanked[result]],
+        ];
       }
     );
+
+    const analysiResult = {
+      message: 'Data received',
+      rankedResults,
+    } as AnalysisResult;
+
+    // Example response to the client
+    return new Response(JSON.stringify(analysiResult), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   } catch (error) {
     return new Response(JSON.stringify({ error: 'Something went wrong' }), {
       status: 500,

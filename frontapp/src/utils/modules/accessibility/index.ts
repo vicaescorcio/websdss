@@ -2,45 +2,13 @@ import { GroupCriteria } from '@/components/Forms/AnalysisForm/MultiCriteriaForm
 import fs from 'fs';
 import { parser } from 'stream-json';
 import { streamArray } from 'stream-json/streamers/StreamArray';
+import { AccessibilityOptions, AccessibilityAnalysisResult } from './types';
 
-export type AccessibilityOptions = {
-  travelTime: number;
-  transportMode: string;
-  accessibilityModel: 'active' | 'passive';
-};
-
-// Example returned value:
-// {
-//   '0': {
-//     'Group 1': 120.25,
-//     'Group 2': 0,
-//     'Group 3': 0,
-//     'Group 4': 0
-//    },
-//   '1': {
-//     'Group 1': 323.8225806451612,
-//     'Group 2': 0,
-//     'Group 3': 0,
-//     'Group 4': 0
-//    },
-//   '2': {
-//     'Group 1': 217.2,
-//     'Group 2': 0,
-//     'Group 3': 0,
-//     'Group 4': 0
-//    },
-//   '3': {
-//     'Group 1': 175.7983870967742,
-//     'Group 2': 0,
-//     'Group 3': 0,
-//     'Group 4': 0
-//    }
-// }
 function readData(
   hexLocations: string[],
   groupCriteria: GroupCriteria[],
   accessibilityOptions: AccessibilityOptions
-): Promise<any[]> {
+): Promise<AccessibilityAnalysisResult> {
   return new Promise((resolve, reject) => {
     const results: any[] = [];
     const stream = fs.createReadStream(
@@ -89,24 +57,28 @@ function processData(
       ) {
         criteriaMatrix[data.properties.h3_polyfill_destino] = {
           ...criteriaMatrix[data.properties.h3_polyfill_destino],
-          [criteria.name]: 0,
+          [criteria.name]: { total: 0, hex: '' },
         };
       }
       if (
         data.properties.renda_per_capita >= criteria.incomeRange[0] &&
         data.properties.renda_per_capita < criteria.incomeRange[1]
-      )
+      ) {
         criteria.ageLevel.forEach((ageLevel: string) => {
-          criteriaMatrix[data.properties.h3_polyfill_destino][criteria.name] +=
-            data.properties[ageLevel];
+          criteriaMatrix[data.properties.h3_polyfill_destino][
+            criteria.name
+          ].total += data.properties[ageLevel];
         });
+        criteriaMatrix[data.properties.h3_polyfill_destino][criteria.name].hex =
+          data.properties.h3_polyfill_origem;
+      }
     });
     return criteriaMatrix;
   }
 }
 
-const groupResults = (results: any[]) => {
-  const groupedResults: any = {};
+const groupResults = (results: any[]): AccessibilityAnalysisResult => {
+  const groupedResults: AccessibilityAnalysisResult = {};
   results.forEach((result) => {
     Object.keys(result).forEach((key) => {
       if (!groupedResults[key]) {
@@ -114,9 +86,10 @@ const groupResults = (results: any[]) => {
       }
       Object.keys(result[key]).forEach((group) => {
         if (!groupedResults[key][group]) {
-          groupedResults[key][group] = 0;
+          groupedResults[key][group] = { total: 0, hex: [] };
         }
-        groupedResults[key][group] += result[key][group];
+        groupedResults[key][group].total += result[key][group].total;
+        groupedResults[key][group].hex.push(result[key][group].hex);
       });
     });
   });

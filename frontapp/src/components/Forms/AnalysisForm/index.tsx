@@ -22,6 +22,9 @@ import * as LocationFormTypes from './LocationsForm/types';
 import style from './style.module.css';
 import HelperCard from '@/components/HelperCard';
 import ReviewForm from '../ReviewForm';
+import ResultForm from './ResultForm';
+import { AnalysisResult } from '@/app/api/accessibility/types';
+import { ResultsFilter } from './ResultForm/types';
 
 const AnalysisForm = ({
   locationFormData,
@@ -30,6 +33,9 @@ const AnalysisForm = ({
   setCityGeoJson,
   handleSubmit,
   submitting,
+  results,
+  resultsFilter,
+  setResultsFilter,
 }: {
   locationFormData: LocationFormTypes.LocationForm;
   setLocationFormData: React.Dispatch<
@@ -39,6 +45,9 @@ const AnalysisForm = ({
   setCityGeoJson: (value: any) => void;
   handleSubmit: (params: any) => void;
   submitting: boolean;
+  results: AnalysisResult | null;
+  resultsFilter: ResultsFilter | null;
+  setResultsFilter: (value: any) => void;
 }) => {
   const [checked, setChecked] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
@@ -144,6 +153,13 @@ const AnalysisForm = ({
                 </Box>
                 <LinearProgress />
               </Container>
+            ) : results ? (
+              <ResultForm
+                results={results}
+                analysisFormData={analysisFormData.current}
+                resultsFilter={resultsFilter}
+                setResultsFilter={setResultsFilter}
+              />
             ) : (
               <Stepper
                 steps={steps}
@@ -151,6 +167,7 @@ const AnalysisForm = ({
                   setOpenHelperModal(true);
                 }}
                 onSubmit={handleSubmit}
+                initialStep={0}
               ></Stepper>
             )}
           </Box>
