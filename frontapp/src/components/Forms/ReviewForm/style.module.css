@@ -48,5 +48,6 @@
     flex-wrap: wrap;
     width: 80%;
     justify-content: space-between;
+    flex-direction: column;
   }
 }

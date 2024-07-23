@@ -6,6 +6,7 @@ import {
   Icon,
   Typography,
   IconButton,
+  Tooltip,
 } from '@mui/material';
 import style from './style.module.css';
 import { AnalysisResult, RankedResult } from '@/app/api/accessibility/types';
@@ -22,11 +23,13 @@ const ResultForm = ({
   analysisFormData,
   resultsFilter,
   setResultsFilter,
+  resetAnalysis,
 }: {
   results: AnalysisResult | null;
   analysisFormData: AnalysisForm;
   resultsFilter: ResultsFilter | null;
   setResultsFilter: (value: any) => void;
+  resetAnalysis: () => void;
 }) => {
   const { rankedResults } = results || {};
   const [showResult, setShowResult] = useState(true);
@@ -49,12 +52,12 @@ const ResultForm = ({
           color='primary'
           size={showResult ? 'large' : 'small'}
           onClick={() => setShowResult(false)}
-          variant='contained'
           sx={{
             textAlign: 'center',
             width: '50%',
             mb: 2,
             alignSelf: 'center',
+            borderBottom: showResult ? 'none' : '1px solid',
           }}
         >
           INPUTS
@@ -62,13 +65,13 @@ const ResultForm = ({
         <Button
           color='primary'
           size={showResult ? 'small' : 'large'}
-          variant='contained'
           onClick={() => setShowResult(true)}
           sx={{
             textAlign: 'center',
             width: '50%',
             mb: 2,
             alignSelf: 'center',
+            borderBottom: showResult ? '1px solid' : 'none',
           }}
         >
           RESULTS
@@ -160,7 +163,9 @@ const ResultForm = ({
                           }
                           color='primary'
                         >
-                          <TravelExplore />
+                          <Tooltip title='Explore this result on map'>
+                            <TravelExplore />
+                          </Tooltip>
                         </IconButton>
                       </Fragment>
                     );
@@ -179,8 +184,8 @@ const ResultForm = ({
               justifyContent: 'space-between',
             }}
           >
-            <Button>Export in CSV</Button>
-            <Button>New Analysis</Button>
+            <Button disabled>Export in CSV</Button>
+            <Button onClick={resetAnalysis}>New Analysis</Button>
           </Box>
         </Box>
       ) : (

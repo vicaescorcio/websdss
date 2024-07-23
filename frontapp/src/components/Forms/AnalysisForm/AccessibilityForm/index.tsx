@@ -134,6 +134,7 @@ const AccessibilityForm = ({ formData }: { formData: AnalysisForm }) => {
                 value={model.value}
                 control={<Radio />}
                 label={model.label}
+                disabled={model.value === 'active'}
               />
             ))}
           </RadioGroup>
@@ -166,7 +167,7 @@ const AccessibilityForm = ({ formData }: { formData: AnalysisForm }) => {
               <FormControlLabel
                 key={year.value}
                 value={year.value}
-                control={<Radio />}
+                control={<Radio disabled={year.value === '2020'} />}
                 label={year.label}
               />
             ))}
@@ -202,7 +203,7 @@ const AccessibilityForm = ({ formData }: { formData: AnalysisForm }) => {
             <FormControlLabel
               key={mode.value}
               value={mode.value}
-              control={<Radio />}
+              control={<Radio disabled={mode.value != 'public'} />}
               label={<Tooltip title={mode.label}>{mode.icon}</Tooltip>}
             />
           ))}

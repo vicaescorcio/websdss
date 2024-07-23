@@ -9,6 +9,7 @@ import {
   LinearProgress,
   Container,
   Alert,
+  Button,
 } from '@mui/material';
 import LocationForm from './LocationsForm';
 import AccessibilityForm from './AccessibilityForm';
@@ -36,6 +37,7 @@ const AnalysisForm = ({
   results,
   resultsFilter,
   setResultsFilter,
+  resetAnalysis,
 }: {
   locationFormData: LocationFormTypes.LocationForm;
   setLocationFormData: React.Dispatch<
@@ -48,6 +50,7 @@ const AnalysisForm = ({
   results: AnalysisResult | null;
   resultsFilter: ResultsFilter | null;
   setResultsFilter: (value: any) => void;
+  resetAnalysis: () => void;
 }) => {
   const [checked, setChecked] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
@@ -159,6 +162,7 @@ const AnalysisForm = ({
                 analysisFormData={analysisFormData.current}
                 resultsFilter={resultsFilter}
                 setResultsFilter={setResultsFilter}
+                resetAnalysis={resetAnalysis}
               />
             ) : (
               <Stepper

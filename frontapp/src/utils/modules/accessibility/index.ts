@@ -69,8 +69,13 @@ function processData(
             criteria.name
           ].total += data.properties[ageLevel];
         });
-        criteriaMatrix[data.properties.h3_polyfill_destino][criteria.name].hex =
-          data.properties.h3_polyfill_origem;
+        if (
+          criteriaMatrix[data.properties.h3_polyfill_destino][criteria.name]
+            .total > 10
+        )
+          criteriaMatrix[data.properties.h3_polyfill_destino][
+            criteria.name
+          ].hex = data.properties.h3_polyfill_origem;
       }
     });
     return criteriaMatrix;

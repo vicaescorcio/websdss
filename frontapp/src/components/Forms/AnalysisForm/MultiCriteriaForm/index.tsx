@@ -16,14 +16,23 @@ import {
   Tooltip,
   TextField,
   Checkbox,
+  Icon,
 } from '@mui/material';
-import { Groups, Info, RemoveCircleOutline } from '@mui/icons-material';
+import {
+  ArrowDownward,
+  ArrowUpward,
+  Groups,
+  Info,
+  RemoveCircleOutline,
+} from '@mui/icons-material';
 import style from './style.module.css';
 import { AnalysisForm } from '../types';
 import {
   GroupCriteria,
   MultiCriteriaForm as MultiCriteriaFormType,
 } from './types.d';
+
+const MAX_INCOME_VALUE = 5000;
 
 const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
   const [multiCriteriaForm, setMultiCriteriaForm] =
@@ -80,7 +89,7 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
         <Slider
           getAriaLabel={() => 'Renda'}
           value={multiCriteriaForm.incomeRange}
-          max={200000}
+          max={MAX_INCOME_VALUE}
           onChange={handleChange}
           name='incomeRange'
           valueLabelDisplay='auto'
@@ -239,7 +248,6 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
               <Tooltip title={`Groups details: ${JSON.stringify(group)}`}>
                 <Groups color={'primary'} />
               </Tooltip>
-              {/* <FormLabel>Group {index + 1}</FormLabel> */}
               <TextField
                 label={`Group ${index + 1}`}
                 sx={{ width: '40%' }}
@@ -294,6 +302,17 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
                   }}
                 />
               </FormControl>
+              <FormControl>
+                <Icon>
+                  <Tooltip title={`Criteria type: ${group.criteriaType} `}>
+                    {group.criteriaType == 'max' ? (
+                      <ArrowUpward />
+                    ) : (
+                      <ArrowDownward />
+                    )}
+                  </Tooltip>
+                </Icon>
+              </FormControl>
               <IconButton
                 onClick={(e) => {
                   setMultiCriteriaForm((previous: MultiCriteriaFormType) => {
@@ -311,7 +330,9 @@ const MultiCriteriaForm = ({ formData }: { formData: AnalysisForm }) => {
                 }}
                 color='error'
               >
-                <RemoveCircleOutline />
+                <Tooltip title={`Remove group`}>
+                  <RemoveCircleOutline />
+                </Tooltip>
               </IconButton>
             </Box>
           );
