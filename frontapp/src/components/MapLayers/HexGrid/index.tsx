@@ -50,7 +50,7 @@ const HexGrid = ({
             hexId: feature.properties?.h3_polyfill || `${point[0]}-${point[1]}`,
             latitude: point[0],
             longitude: point[1],
-            name: 'point',
+            name: `point ${previous.points.length + 1}`,
           } as LocationPoint,
         ],
       };

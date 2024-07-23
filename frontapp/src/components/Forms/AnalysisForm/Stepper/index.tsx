@@ -6,9 +6,7 @@ import StepButton from '@mui/material/StepButton';
 import IconButton from '@mui/material/IconButton';
 import Help from '@mui/icons-material/Help';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import style from './style.module.css';
-import { on } from 'events';
 
 type Step = {
   label: string;
@@ -20,12 +18,14 @@ export default function HorizontalNonLinearStepper({
   steps,
   onHelperClick,
   onSubmit,
+  initialStep,
 }: {
   steps: Step[];
   onHelperClick: () => void;
   onSubmit: (params: any) => void;
+  initialStep: number;
 }) {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(initialStep);
   const [completed, setCompleted] = React.useState<{
     [k: number]: boolean;
   }>({});
@@ -66,12 +66,10 @@ export default function HorizontalNonLinearStepper({
     setActiveStep(step);
   };
 
-  // const handleComplete = () => {
-  //   const newCompleted = completed;
-  //   newCompleted[activeStep] = true;
-  //   setCompleted(newCompleted);
-  //   handleNext();
-  // };
+  const handleSubmit = (event: any) => {
+    handleNext(event);
+    onSubmit(event);
+  };
 
   const handleReset = () => {
     setActiveStep(0);
@@ -89,19 +87,8 @@ export default function HorizontalNonLinearStepper({
           </Step>
         ))}
       </Stepper>
-      {allStepsCompleted() ? (
-        <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>{steps[activeStep].component}</React.Fragment>
-      )}
+
+      <React.Fragment>{steps[activeStep].component}</React.Fragment>
       <Box className={style.stepperActions}>
         <IconButton onClick={onHelperClick}>
           <Help />
@@ -109,24 +96,13 @@ export default function HorizontalNonLinearStepper({
         <Button disabled={activeStep === 0} onClick={handleBack}>
           Back
         </Button>
-        <Button onClick={handleNext}>Next</Button>
-
-        {/* {activeStep !== steps.length &&
-          (completed[activeStep] ? (
-            <Typography variant='caption' sx={{ display: 'inline-block' }}>
-              Step {activeStep + 1} already completed
-            </Typography>
-          ) : (
-            // <Button onClick={handleComplete}>
-            //   {completedSteps() === totalSteps() - 1
-            //     ? 'Finish'
-            //     : 'Complete Step'}
-            // </Button>
-          ))} */}
+        <Button disabled={activeStep == steps.length - 1} onClick={handleNext}>
+          Next
+        </Button>
         <Button
           disabled={activeStep != steps.length - 1}
           className={style.submitButton}
-          onClick={onSubmit}
+          onClick={handleSubmit}
           type='submit'
         >
           Submit
