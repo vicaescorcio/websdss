@@ -14,6 +14,7 @@ import {
   AnalysisResult,
 } from './api/accessibility/types';
 import { ResultsFilter } from '@/components/Forms/AnalysisForm/ResultForm/types';
+import PreventLeafletControl from '@/components/PreventLeafletControl';
 
 const initialAnalysisForm: AnalysisFormType = {
   locationForm: {
@@ -116,9 +117,11 @@ export default function Page() {
   const resetAnalysis = () => {
     window?.location.reload();
   };
+
+  const [centerPoint, setCenterPoint] = useState([-3.731862, -38.526669]);
   return (
     <div>
-      <Map posix={[-3.731862, -38.526669]}>
+      <Map posix={centerPoint}>
         {!results ? (
           <HexGrid
             data={cityGeoJson as GeoJSON.FeatureCollection}
@@ -133,19 +136,21 @@ export default function Page() {
             mainGroup={resultsFilter?.group}
           ></ResultGrid>
         )}
+        <PreventLeafletControl>
+          <AnalysisForm
+            locationFormData={locationFormData}
+            setLocationFormData={setLocationFormData}
+            analysisFormData={analysisFormData}
+            setCityGeoJson={setCityGeoJson}
+            handleSubmit={handleSubmit}
+            submitting={submitting}
+            results={results}
+            resultsFilter={resultsFilter}
+            setResultsFilter={setResultsFilter}
+            resetAnalysis={resetAnalysis}
+          />
+        </PreventLeafletControl>
       </Map>
-      <AnalysisForm
-        locationFormData={locationFormData}
-        setLocationFormData={setLocationFormData}
-        analysisFormData={analysisFormData}
-        setCityGeoJson={setCityGeoJson}
-        handleSubmit={handleSubmit}
-        submitting={submitting}
-        results={results}
-        resultsFilter={resultsFilter}
-        setResultsFilter={setResultsFilter}
-        resetAnalysis={resetAnalysis}
-      />
     </div>
   );
 }

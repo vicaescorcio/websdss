@@ -1,10 +1,19 @@
-import { Box, Divider, FormLabel, TextField } from '@mui/material';
+import {
+  Box,
+  Divider,
+  FormLabel,
+  IconButton,
+  TextField,
+  Tooltip,
+} from '@mui/material';
 import style from './style.module.css';
 
 import { AnalysisForm as AnalysisFormType } from '../AnalysisForm/types';
 import { LocationPoint } from '../AnalysisForm/LocationsForm/types';
 import { Groups, LocationOn } from '@mui/icons-material';
 import { GroupCriteria } from '../AnalysisForm/MultiCriteriaForm/types';
+import { useMapEvents } from 'react-leaflet/hooks';
+import LocationMapIconButton from '@/components/Buttons/LocationMapIconButton';
 
 const ReviewForm = ({ formData }: { formData: AnalysisFormType }) => {
   const {
@@ -12,6 +21,7 @@ const ReviewForm = ({ formData }: { formData: AnalysisFormType }) => {
     accessibilityForm: accessibilityFormData,
     multiCriteriaForm: multiCriteriaFormData,
   } = formData;
+  const map = useMapEvents({});
   return (
     <Box className={style.reviewFormContainer}>
       <Divider>Points of Interest</Divider>
@@ -19,7 +29,10 @@ const ReviewForm = ({ formData }: { formData: AnalysisFormType }) => {
         {locationFormData.points.map((point: LocationPoint, index) => {
           return (
             <Box key={index} className={style.dividerLocationContainer}>
-              <LocationOn color={'primary'} />
+              <LocationMapIconButton
+                map={map}
+                coords={[point.longitude, point.latitude]}
+              />
               <FormLabel>
                 <b>Name:</b> {point.name}
               </FormLabel>

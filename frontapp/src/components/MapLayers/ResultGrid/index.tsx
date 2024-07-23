@@ -3,7 +3,7 @@ import { useMapEvents } from 'react-leaflet/hooks';
 import L, { Layer, Map, icon } from 'leaflet';
 import { AnalysisResult } from '@/app/api/accessibility/types';
 
-const POINTS_COLOR = ['red', 'blue', 'green', 'yellow'];
+const POINTS_COLOR = ['red', 'blue', 'green', 'orange'];
 
 const ResultGrid = ({
   data,
@@ -52,16 +52,6 @@ const ResultGrid = ({
       map.addLayer(marker);
     }
   };
-
-  // const map = useMapEvents({
-  //   click() {
-  //     map.locate();
-  //     map.addLayer(marker);
-  //   },
-  //   locationfound(e) {
-  //     map.flyTo(e.latlng, map.getZoom());
-  //   },
-  // });
 
   return (
     <GeoJSON

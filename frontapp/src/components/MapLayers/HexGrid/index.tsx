@@ -5,7 +5,7 @@ import {
   LocationForm,
   LocationPoint,
 } from '@/components/Forms/AnalysisForm/LocationsForm/types';
-import L, { Layer, Map } from 'leaflet';
+import L, { LatLngTuple, Layer, Map } from 'leaflet';
 
 const HexGrid = ({
   data,
@@ -16,6 +16,7 @@ const HexGrid = ({
   setLocationFormData: any;
   analysisFormData: any;
 }) => {
+  const map = useMapEvents({});
   const onClick = (
     feature: GeoJSON.Feature<any, HexProperties>,
     layer: Layer,
@@ -25,6 +26,7 @@ const HexGrid = ({
     const marker = L.marker([point[1], point[0]]).bindPopup(
       `Point of interest ${feature.properties?.id as string}`
     );
+    map.flyTo([point[1], point[0]], 12);
     marker.addEventListener('click', (e) => {
       setLocationFormData((previous: LocationForm) => {
         marker.remove();
@@ -60,7 +62,7 @@ const HexGrid = ({
       return newLocationData;
     });
   };
-  const map = useMapEvents({});
+
   const onEachFeature = (feature: any, layer: Layer) => {
     let popupContent = `District Code: ${feature.properties.name} <br> District:`;
     if (feature.properties && feature.properties.popupContent) {
@@ -72,16 +74,6 @@ const HexGrid = ({
       },
     });
   };
-
-  // const map = useMapEvents({
-  //   click() {
-  //     map.locate();
-  //     map.addLayer(marker);
-  //   },
-  //   locationfound(e) {
-  //     map.flyTo(e.latlng, map.getZoom());
-  //   },
-  // });
 
   return (
     <GeoJSON
