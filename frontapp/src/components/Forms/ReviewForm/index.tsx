@@ -10,7 +10,7 @@ import style from './style.module.css';
 
 import { AnalysisForm as AnalysisFormType } from '../AnalysisForm/types';
 import { LocationPoint } from '../AnalysisForm/LocationsForm/types';
-import { Groups, LocationOn } from '@mui/icons-material';
+import { Groups } from '@mui/icons-material';
 import { GroupCriteria } from '../AnalysisForm/MultiCriteriaForm/types';
 import { useMapEvents } from 'react-leaflet/hooks';
 import LocationMapIconButton from '@/components/Buttons/LocationMapIconButton';

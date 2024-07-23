@@ -88,11 +88,7 @@ export default function Page() {
   const Map = useMemo(
     () =>
       dynamic(() => import('@/components/Map/'), {
-        loading: () => (
-          <Container>
-            <LinearProgress />
-          </Container>
-        ),
+        loading: () => <LinearProgress />,
         ssr: false,
       }),
     []

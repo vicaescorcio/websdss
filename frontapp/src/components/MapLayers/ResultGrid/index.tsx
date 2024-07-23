@@ -2,8 +2,9 @@ import { GeoJSON } from 'react-leaflet/GeoJSON';
 import { useMapEvents } from 'react-leaflet/hooks';
 import L, { Layer, Map, icon } from 'leaflet';
 import { AnalysisResult } from '@/app/api/accessibility/types';
-
-const POINTS_COLOR = ['red', 'blue', 'green', 'orange'];
+import { POINTS_COLOR } from '@/app/globals';
+import PopulationHexPopup from '../PopulationHexpPopup';
+import ReactDOMServer from 'react-dom/server';
 
 const ResultGrid = ({
   data,
@@ -39,16 +40,35 @@ const ResultGrid = ({
     {} as Record<string, string>
   );
   const onEachFeature = (feature: any, layer: Layer) => {
-    let popupContent = `District Code: ${feature.properties.name} <br> District:`;
-    if (feature.properties && feature.properties.popupContent) {
-      popupContent += feature.properties.popupContent;
+    let popupContent: any;
+    const properties = feature.properties;
+    if (properties) {
+      popupContent = ReactDOMServer.renderToString(
+        <PopulationHexPopup properties={properties} />
+      );
     }
 
+    let timeout: any;
+    layer.on({
+      mouseover: (e) => {
+        timeout = setTimeout(() => {
+          layer.bindPopup(popupContent).openPopup();
+        }, 500);
+      },
+      mouseout: () => {
+        clearTimeout(timeout);
+        layer.closePopup();
+      },
+    });
+
     if (hexPoints.includes(feature.properties.h3_polyfill)) {
+      const hexPoint = rankedResults.find(
+        (r) => r[0] === feature.properties.h3_polyfill
+      );
       const point = feature.geometry.coordinates[0][0];
       const marker = L.marker([point[1], point[0]], {
         icon: getIcon(colorMap[feature.properties.h3_polyfill]),
-      }).bindPopup(`Point of interest ${feature.properties?.id as string}`);
+      }).bindPopup(`Point of interest ${hexPoint && hexPoint[0]}`);
       map.addLayer(marker);
     }
   };

@@ -17,8 +17,7 @@ import { Fragment, useState } from 'react';
 import ReviewForm from '../../ReviewForm';
 import LocationMapIconButton from '@/components/Buttons/LocationMapIconButton';
 import { useMapEvents } from 'react-leaflet/hooks';
-
-const POINTS_COLOR = ['red', 'blue', 'green', 'orange'];
+import { POINTS_COLOR } from '@/app/globals';
 
 const ResultForm = ({
   results,
@@ -105,6 +104,7 @@ const ResultForm = ({
                 <Typography variant='h6'>
                   <LocationMapIconButton
                     map={map}
+                    color={POINTS_COLOR[index]}
                     coords={[point?.longitude || 1, point?.latitude || 1]}
                   />
                   {point?.name}
@@ -167,7 +167,12 @@ const ResultForm = ({
                           {r[1][key].total.toPrecision(5)}
                         </Typography>
                         <LocationMapIconButton
-                          customIcon={<TravelExplore color='info' />}
+                          title={'Visualize this group criteria on the map'}
+                          customIcon={
+                            <TravelExplore
+                              sx={{ color: POINTS_COLOR[index] }}
+                            />
+                          }
                           callback={() =>
                             setResultsFilter({ hex: r[0], group: key })
                           }
