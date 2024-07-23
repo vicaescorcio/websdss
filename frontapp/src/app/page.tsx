@@ -40,13 +40,13 @@ const initialAnalysisForm: AnalysisFormType = {
 };
 
 export default function Page() {
-  const analysisFormData = useRef<AnalysisFormType>(initialAnalysisForm);
+  const analysisFormData = useRef<AnalysisFormType>({ ...initialAnalysisForm });
   const [cityGeoJson, setCityGeoJson] =
     useState<GeoJSON.FeatureCollection | null>(null);
 
-  const [locationFormData, setLocationFormData] = useState<LocationForm>(
-    analysisFormData.current.locationForm
-  );
+  const [locationFormData, setLocationFormData] = useState<LocationForm>({
+    ...analysisFormData.current.locationForm,
+  });
 
   const [submitting, setSubmitting] = useState(false);
   const [results, setResults] = useState<AnalysisResult | null>(null);
@@ -112,6 +112,10 @@ export default function Page() {
       }),
     []
   );
+
+  const resetAnalysis = () => {
+    window?.location.reload();
+  };
   return (
     <div>
       <Map posix={[-3.731862, -38.526669]}>
@@ -140,6 +144,7 @@ export default function Page() {
         results={results}
         resultsFilter={resultsFilter}
         setResultsFilter={setResultsFilter}
+        resetAnalysis={resetAnalysis}
       />
     </div>
   );

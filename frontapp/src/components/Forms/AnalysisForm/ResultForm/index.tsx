@@ -22,11 +22,13 @@ const ResultForm = ({
   analysisFormData,
   resultsFilter,
   setResultsFilter,
+  resetAnalysis,
 }: {
   results: AnalysisResult | null;
   analysisFormData: AnalysisForm;
   resultsFilter: ResultsFilter | null;
   setResultsFilter: (value: any) => void;
+  resetAnalysis: () => void;
 }) => {
   const { rankedResults } = results || {};
   const [showResult, setShowResult] = useState(true);
@@ -179,8 +181,8 @@ const ResultForm = ({
               justifyContent: 'space-between',
             }}
           >
-            <Button>Export in CSV</Button>
-            <Button>New Analysis</Button>
+            <Button disabled>Export in CSV</Button>
+            <Button onClick={resetAnalysis}>New Analysis</Button>
           </Box>
         </Box>
       ) : (
