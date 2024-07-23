@@ -15,6 +15,7 @@ import {
 } from './api/accessibility/types';
 import { ResultsFilter } from '@/components/Forms/AnalysisForm/ResultForm/types';
 import PreventLeafletControl from '@/components/PreventLeafletControl';
+import MapFiltersForm from '@/components/Forms/MapFiltersForm';
 
 const initialAnalysisForm: AnalysisFormType = {
   locationForm: {
@@ -145,6 +146,12 @@ export default function Page() {
             setResultsFilter={setResultsFilter}
             resetAnalysis={resetAnalysis}
           />
+          {resultsFilter && (
+            <MapFiltersForm
+              filters={resultsFilter}
+              setFilters={setResultsFilter}
+            />
+          )}
         </PreventLeafletControl>
       </Map>
     </div>
