@@ -54,28 +54,41 @@ const ReviewForm = ({ formData }: { formData: AnalysisFormType }) => {
         </FormLabel>
       </Box>
       <Divider>Population Group Criterias</Divider>
-      <Box className={style.dividerContainer}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          rowGap: '15px',
+        }}
+      >
         {multiCriteriaFormData.groups.map((group: GroupCriteria, index) => {
           return (
-            <Box key={index} className={style.dividerGroupContainer}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '50%',
+              }}
+            >
               <Groups color={'primary'} />
-              <Box className={style.dividerGroupInnerContainer}>
-                <FormLabel>
-                  <b>Name:</b> {group.name}
-                </FormLabel>
-                <FormLabel>
-                  <b>Income Range:</b> {group.incomeRange}
-                </FormLabel>
-                <FormLabel>
-                  <b>Age Levels:</b> {group.ageLevel.join(', ')}
-                </FormLabel>
-                <FormLabel>
-                  <b>Weight:</b> {group.weight}
-                </FormLabel>
-                <FormLabel>
-                  <b>Criteria Type:</b> {group.criteriaType}
-                </FormLabel>
-              </Box>
+              <FormLabel>
+                <b>Name:</b> {group.name}
+              </FormLabel>
+              <FormLabel>
+                <b>Income Range:</b> {group.incomeRange}
+              </FormLabel>
+              <FormLabel>
+                <b>Age Levels:</b> {group.ageLevel.join(', ')}
+              </FormLabel>
+              <FormLabel>
+                <b>Weight:</b> {group.weight}
+              </FormLabel>
+              <FormLabel>
+                <b>Criteria Type:</b> {group.criteriaType}
+              </FormLabel>
             </Box>
           );
         })}
