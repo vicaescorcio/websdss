@@ -15,8 +15,10 @@ import { AnalysisForm } from '../types';
 import { EmojiEvents, Group, TravelExplore } from '@mui/icons-material';
 import { Fragment, useState } from 'react';
 import ReviewForm from '../../ReviewForm';
+import LocationMapIconButton from '@/components/Buttons/LocationMapIconButton';
+import { useMapEvents } from 'react-leaflet/hooks';
 
-const POINTS_COLOR = ['red', 'blue', 'green', 'yellow'];
+const POINTS_COLOR = ['red', 'blue', 'green', 'orange'];
 
 const ResultForm = ({
   results,
@@ -31,6 +33,7 @@ const ResultForm = ({
   setResultsFilter: (value: any) => void;
   resetAnalysis: () => void;
 }) => {
+  const map = useMapEvents({});
   const { rankedResults } = results || {};
   const [showResult, setShowResult] = useState(true);
   const {
@@ -99,7 +102,13 @@ const ResultForm = ({
                     />
                   </Icon>
                 </FormLabel>
-                <Typography variant='h6'>{point?.name}</Typography>
+                <Typography variant='h6'>
+                  <LocationMapIconButton
+                    map={map}
+                    coords={[point?.longitude || 1, point?.latitude || 1]}
+                  />
+                  {point?.name}
+                </Typography>
                 <FormLabel sx={{ mt: 1 }} component='legend'>
                   Hex
                 </FormLabel>
@@ -140,6 +149,7 @@ const ResultForm = ({
               const ResultContainer = (
                 <Box key={index} className={style.resultsContainer}>
                   {Object.keys(r[1]).map((key) => {
+                    const point = points.find((p) => p.hexId === r[0]);
                     return (
                       <Fragment key={key}>
                         <Icon>
@@ -156,17 +166,14 @@ const ResultForm = ({
                         <Typography key={key} variant='body1'>
                           {r[1][key].total.toPrecision(5)}
                         </Typography>
-
-                        <IconButton
-                          onClick={() =>
+                        <LocationMapIconButton
+                          customIcon={<TravelExplore color='info' />}
+                          callback={() =>
                             setResultsFilter({ hex: r[0], group: key })
                           }
-                          color='primary'
-                        >
-                          <Tooltip title='Explore this result on map'>
-                            <TravelExplore />
-                          </Tooltip>
-                        </IconButton>
+                          map={map}
+                          coords={[point?.longitude || 1, point?.latitude || 1]}
+                        />
                       </Fragment>
                     );
                   })}
