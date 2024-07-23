@@ -23,8 +23,8 @@ const initialAnalysisForm: AnalysisFormType = {
   },
   accessibilityForm: {
     distance: 1000,
-    transportMode: 'walking',
-    year: '2020',
+    transportMode: 'public',
+    year: '2023',
     model: 'passive',
     travelTime: 30,
   },
@@ -32,8 +32,8 @@ const initialAnalysisForm: AnalysisFormType = {
   multiCriteriaForm: {
     groups: [],
     gender: 'male',
-    weight: 0.25,
-    incomeRange: [0, 100000],
+    weight: 1,
+    incomeRange: [0, 5000],
     criteriaType: 'max',
     ageLevel: ['6_a_10_anos'],
   },
