@@ -14,6 +14,7 @@ import {
   AnalysisResult,
 } from './api/accessibility/types';
 import { ResultsFilter } from '@/components/Forms/AnalysisForm/ResultForm/types';
+import MapFiltersForm from '@/components/Forms/MapFiltersForm';
 
 const initialAnalysisForm: AnalysisFormType = {
   locationForm: {
@@ -87,11 +88,7 @@ export default function Page() {
   const Map = useMemo(
     () =>
       dynamic(() => import('@/components/Map/'), {
-        loading: () => (
-          <Container>
-            <LinearProgress />
-          </Container>
-        ),
+        loading: () => <LinearProgress />,
         ssr: false,
       }),
     []
@@ -113,12 +110,22 @@ export default function Page() {
     []
   );
 
+  const PreventLeafletControl = useMemo(
+    () =>
+      dynamic(() => import('@/components/PreventLeafletControl'), {
+        ssr: false,
+      }),
+    []
+  );
+
   const resetAnalysis = () => {
     window?.location.reload();
   };
+
+  const [centerPoint, setCenterPoint] = useState([-3.731862, -38.526669]);
   return (
     <div>
-      <Map posix={[-3.731862, -38.526669]}>
+      <Map posix={centerPoint}>
         {!results ? (
           <HexGrid
             data={cityGeoJson as GeoJSON.FeatureCollection}
@@ -133,19 +140,27 @@ export default function Page() {
             mainGroup={resultsFilter?.group}
           ></ResultGrid>
         )}
+        <PreventLeafletControl>
+          <AnalysisForm
+            locationFormData={locationFormData}
+            setLocationFormData={setLocationFormData}
+            analysisFormData={analysisFormData}
+            setCityGeoJson={setCityGeoJson}
+            handleSubmit={handleSubmit}
+            submitting={submitting}
+            results={results}
+            resultsFilter={resultsFilter}
+            setResultsFilter={setResultsFilter}
+            resetAnalysis={resetAnalysis}
+          />
+          {resultsFilter && (
+            <MapFiltersForm
+              filters={resultsFilter}
+              setFilters={setResultsFilter}
+            />
+          )}
+        </PreventLeafletControl>
       </Map>
-      <AnalysisForm
-        locationFormData={locationFormData}
-        setLocationFormData={setLocationFormData}
-        analysisFormData={analysisFormData}
-        setCityGeoJson={setCityGeoJson}
-        handleSubmit={handleSubmit}
-        submitting={submitting}
-        results={results}
-        resultsFilter={resultsFilter}
-        setResultsFilter={setResultsFilter}
-        resetAnalysis={resetAnalysis}
-      />
     </div>
   );
 }

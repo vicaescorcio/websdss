@@ -11,6 +11,7 @@ import {
   Select,
   Tooltip,
   Divider,
+  IconButton,
 } from '@mui/material';
 import { LocationOn, Info } from '@mui/icons-material';
 
@@ -20,6 +21,8 @@ import style from './style.module.css';
 
 import { LocationForm as LocationFormType, LocationPoint } from './types';
 import { AnalysisForm } from '../types';
+import { useMapEvents } from 'react-leaflet/hooks';
+import LocationMapIconButton from '@/components/Buttons/LocationMapIconButton';
 
 export default function LocationForm({
   formData,
@@ -32,6 +35,7 @@ export default function LocationForm({
   formData: AnalysisForm;
   setCityGeoJson: (value: any) => void;
 }) {
+  const map = useMapEvents({});
   const handleChange = (e: any) => {
     setLocationFormData((previous: LocationFormType) => {
       const newLocationData = {
@@ -138,7 +142,11 @@ export default function LocationForm({
                 justifyContent: 'space-between',
               }}
             >
-              <LocationOn color={'primary'} />
+              <LocationMapIconButton
+                map={map}
+                coords={[point.longitude, point.latitude]}
+              />
+
               <TextField
                 label={`Point ${index + 1}`}
                 sx={{ width: '30%' }}

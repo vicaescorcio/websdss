@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef, Fragment, MutableRefObject } from 'react';
+import { useState, useRef, Fragment, MutableRefObject, useEffect } from 'react';
 import {
   Fab,
   Slide,
@@ -136,6 +136,7 @@ const AnalysisForm = ({
   const openForm = () => {
     setChecked((prev) => !prev);
   };
+
   return (
     <Fragment>
       <Box className={style.analysisFormContainer}>

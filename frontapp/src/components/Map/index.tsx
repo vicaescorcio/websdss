@@ -1,6 +1,12 @@
 'use client';
 
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvents,
+} from 'react-leaflet';
 import { LatLngExpression, LatLngTuple } from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
@@ -11,7 +17,7 @@ import { useRef, useState, Fragment } from 'react';
 import { MapProps } from './types';
 
 const defaults = {
-  zoom: 10,
+  zoom: 12,
 };
 
 const data: GeoJSON.Feature = {
@@ -29,9 +35,6 @@ const data: GeoJSON.Feature = {
 
 const Map = (Map: MapProps) => {
   const { zoom = defaults.zoom, posix } = Map;
-  const [position, setPosition] = useState<LatLngExpression | LatLngTuple>([
-    -33, -70,
-  ]);
 
   return (
     <Fragment>
