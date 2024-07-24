@@ -14,7 +14,6 @@ import {
   AnalysisResult,
 } from './api/accessibility/types';
 import { ResultsFilter } from '@/components/Forms/AnalysisForm/ResultForm/types';
-import PreventLeafletControl from '@/components/PreventLeafletControl';
 import MapFiltersForm from '@/components/Forms/MapFiltersForm';
 
 const initialAnalysisForm: AnalysisFormType = {
@@ -106,6 +105,14 @@ export default function Page() {
   const ResultGrid = useMemo(
     () =>
       dynamic(() => import('@/components/MapLayers/ResultGrid'), {
+        ssr: false,
+      }),
+    []
+  );
+
+  const PreventLeafletControl = useMemo(
+    () =>
+      dynamic(() => import('@/components/PreventLeafletControl'), {
         ssr: false,
       }),
     []
