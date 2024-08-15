@@ -1,6 +1,5 @@
 // jest.config.js
 const nextJest = require('next/jest');
-
 const createJestConfig = nextJest({
   // Path to Next.js app to load next.config.js
   dir: './',

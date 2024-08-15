@@ -90,7 +90,7 @@ export default function HorizontalNonLinearStepper({
 
       <React.Fragment>{steps[activeStep].component}</React.Fragment>
       <Box className={style.stepperActions}>
-        <IconButton onClick={onHelperClick}>
+        <IconButton data-testid='helpModal' onClick={onHelperClick}>
           <Help />
         </IconButton>
         <Button disabled={activeStep === 0} onClick={handleBack}>

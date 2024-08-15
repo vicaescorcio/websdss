@@ -82,7 +82,7 @@ function processData(
   }
 }
 
-const groupResults = (results: any[]): AccessibilityAnalysisResult => {
+export const groupResults = (results: any[]): AccessibilityAnalysisResult => {
   const groupedResults: AccessibilityAnalysisResult = {};
   results.forEach((result) => {
     Object.keys(result).forEach((key) => {
