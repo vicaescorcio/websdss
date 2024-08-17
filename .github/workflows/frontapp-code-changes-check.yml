@@ -38,6 +38,10 @@ jobs:
           npm run build
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
+      - name: Build Docker image
+        working-directory: frontapp
+        run: |
+          docker build -t my-docker-image .
 
 # These are legacy default permissions that were added automatically.
 # https://github.com/tadodotcom/github-management/issues/7
